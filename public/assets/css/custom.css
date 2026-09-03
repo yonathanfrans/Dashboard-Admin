@@ -1,0 +1,43 @@
+.autentication-bg {
+    background: rgb(241 245 249);
+    background-image: none;
+}
+
+.autentication-bg::before,
+.autentication-bg::after {
+    background: none;
+    background-image: none;
+}
+
+.card.custom-card {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.form-control {
+    border-width: 2px;
+}
+
+.side-menu__item {
+    cursor: pointer;
+}
+
+.logout-menu {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+#editor {
+    height: 400px;
+    overflow: scroll;
+}
+
+.thumbnail-card {
+    height: 150px; 
+    object-fit: cover;
+}
