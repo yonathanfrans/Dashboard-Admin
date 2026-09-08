@@ -2,30 +2,24 @@
 
 namespace App\Models;
 
+use App\Services\LoginApiService;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['news_category_id', 'title', 'slug', 'thumbnail', 'content', 'sumber', 'status', 'tgl_publish'])]
+#[Fillable(['heading', 'slug', 'date_news', 'jns_file', 'flag_kegiatan', 'thumbnail_image', 'large_image', 'content', 'source', 'show_since', 'off_from', 'video_url', 'video_url_smaller', 'counter', 'publish', 'id_user'])]
 class News extends Model
 {
-    // Relasi M to 1
-    public function newsCategory(): BelongsTo
-    {
-        return $this->belongsTo(NewsCategory::class);
-    }
+    protected $table = 'trs_portal_berita';
 
-    // Relasi 1 to M
-    public function files(): HasMany
-    {
-        return $this->hasMany(NewsFile::class);
-    }
+    public $timestamps = false;
 
     protected function casts(): array
     {
         return [
-            'tgl_publish' => 'date',
+            'entry_date' => 'datetime',
+            'date_news' => 'date',
+            'off_from' => 'date',
+            'show_since' => 'date',
         ];
     }
 }

@@ -41,3 +41,11 @@
     height: 150px; 
     object-fit: cover;
 }
+
+.show-pdf {
+    min-height: 300px;
+}
+
+.show-thumbnail {
+    min-height: 200px;
+}

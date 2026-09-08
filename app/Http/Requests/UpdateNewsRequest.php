@@ -23,15 +23,13 @@ class UpdateNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'news_category_id' => ['required', 'exists:news_categories,id'],
-            'title' => ['required'],
-            'thumbnail' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
-            'content' => ['required'],
-            'files' => ['nullable', 'array'],
-            'files.*' => ['nullable','file', 'mimes:png,jpg,jpeg,pdf', 'max:5120'],
-            'sumber' => ['required'],
-            'status' => ['required', 'in:Published,Unpublished'],
-            'tgl_publish' => ['nullable', 'date']
+            'heading' => ['required', 'string', 'max:255'],
+            'flag_kegiatan' => ['required', 'in:Y,T'],
+            'thumbnail_image' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
+            'large_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,pdf', 'max:5120'],
+            'content' => ['required', 'string'],            
+            'source' => ['required', 'string', 'max:200'],
+            'publish' => ['required', 'in:Y,T']
         ];
     }
 }

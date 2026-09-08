@@ -27,51 +27,65 @@
 
                             {{-- Judul Berita --}}
                             <div class="col-md-9">
-                                <label for="title" class="form-label">Judul Berita</label>
+                                <label for="heading" class="form-label">Judul Berita</label>
                                 <input
                                     type="text"
-                                    class="form-control @error('title') is-invalid @enderror"
-                                    name="title"
-                                    id="title"
+                                    class="form-control @error('heading') is-invalid @enderror"
+                                    name="heading"
+                                    id="heading"
                                     placeholder="Masukkan judul berita.."
-                                    aria-label="Title"
-                                    value="{{ old('title') }}"
+                                    aria-label="Heading"
+                                    value="{{ old('heading') }}"
                                     required
                                 />
-                                @error('title')
+                                @error('heading')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            {{-- Kategori Berita --}}
+                            {{-- Jenis Berita --}}
                             <div class="col-md-3">
-                                <label for="news_category_id" class="form-label">Kategori Berita</label>
-                                <select name="news_category_id" class="form-select @error('news_category_id') is-invalid @enderror" aria-label="Select category" required>
-                                    <option selected disabled>Pilih kategori</option>
-                                    @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('news_category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->title }}
-                                    </option>
-                                    @endforeach
+                                <label for="flag_kegiatan" class="form-label">Jenis Berita</label>
+                                <select name="flag_kegiatan" class="form-select @error('flag_kegiatan') is-invalid @enderror" aria-label="Select type" required>
+                                    <option selected disabled>Pilih jenis</option>
+                                    <option value="T" {{ old('flag_kegiatan') == 'T' ? 'selected' : '' }}>Berita</option>
+                                    <option value="Y" {{ old('flag_kegiatan') == 'Y' ? 'selected' : '' }}>Kegiatan</option>
                                 </select>
-                                @error('news_category_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                @error('flag_kegiatan')
+                                <div class="invalid-feedback">Please select a news type.</div>
                                 @enderror
                             </div>
 
-                            {{-- Thumbnail --}}
+                            {{-- Thumbnail Image --}}
                             <div class="col-md-6">
-                                <label for="thumbnail" class="form-label">Thumbnail</label>
+                                <label for="thumbnail_image" class="form-label">Gambar Sampul (Thumbnail List)</label>
                                 <input
                                     type="file"
-                                    class="form-control @error('thumbnail') is-invalid @enderror"
-                                    name="thumbnail"
-                                    id="thumbnail"
+                                    class="form-control @error('thumbnail_image') is-invalid @enderror"
+                                    name="thumbnail_image"
+                                    id="thumbnail_image"
                                     accept=".png,.jpg,.jpeg"
                                     required
                                 />
                                 <p class="fs-12 p-2 fw-light">Allowed (PNG, JPG, JPEG) & Max 2MB</p>
-                                @error('thumbnail')
+                                @error('thumbnail_image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Large Image --}}
+                            <div class="col-md-6">
+                                <label for="large_image" class="form-label">Dokumen / Gambar Utama (Isi Berita)</label>
+                                <input
+                                    type="file"
+                                    class="form-control @error('large_image') is-invalid @enderror"
+                                    name="large_image"
+                                    id="large_image"
+                                    accept=".png,.jpg,.jpeg,.pdf"
+                                    required
+                                />
+                                <p class="fs-12 p-2 fw-light">Allowed (PNG, JPG, JPEG, PDF) & Max 5MB</p>
+                                @error('large_image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -82,52 +96,35 @@
                                 <div id="editor">{!! old('content') !!}</div>
                                 <textarea name="content" id="content" hidden></textarea>
                                 @error('content')
-                                <div class="text-danger fs-12 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            {{-- File Pendukung --}}
-                            <div class="col-md-4">
-                                <label for="files" class="form-label">File Pendukung</label>
-                                <input
-                                    type="file"
-                                    name="files[]"
-                                    class="form-control @error('files.*') is-invalid @enderror"
-                                    id="files"
-                                    accept=".pdf,.png,.jpg,.jpeg"
-                                    multiple
-                                />
-                                <p class="fs-12 p-2 fw-light">Allowed (PDF, PNG, JPG, JPEG) & Max 5MB per file</p>
-                                @error('files.*')
-                                <div class="text-danger fs-12 ms-2">{{ $message }}</div>
+                                <div class="text-danger fs-12 mt-1">Please enter the news content.</div>
                                 @enderror
                             </div>
 
                             {{-- Sumber berita --}}
                             <div class="col-md-4">
-                                <label for="sumber" class="form-label">Sumber</label>
+                                <label for="source" class="form-label">Sumber</label>
                                 <input
                                     type="text"
-                                    name="sumber"
-                                    class="form-control @error('sumber') is-invalid @enderror"
-                                    id="sumber"
+                                    name="source"
+                                    class="form-control @error('source') is-invalid @enderror"
+                                    id="source"
                                     placeholder="Masukkan sumber berita..."
-                                    value="{{ old('sumber') }}"
+                                    value="{{ old('source') }}"
                                     required
                                 />
-                                @error('sumber')
+                                @error('source')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             {{-- Status berita --}}
-                            <div class="col-md-2">
-                                <label for="status" class="form-label">Status</label>
-                                <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" aria-label="Select status" required>
-                                    <option value="Unpublished" {{ old('status') == 'Unpublished' ? 'selected' : '' }}>Unpublished</option>
-                                    <option value="Published" {{ old('status') == 'Published' ? 'selected' : '' }}>Published</option>
+                            <div class="col-md-4">
+                                <label for="publish" class="form-label">Status</label>
+                                <select name="publish" id="publish" class="form-select @error('publish') is-invalid @enderror" aria-label="Select status" required>
+                                    <option value="T" {{ old('publish') == 'T' ? 'selected' : '' }}>Unpublished</option>
+                                    <option value="Y" {{ old('publish') == 'Y' ? 'selected' : '' }}>Published</option>
                                 </select>
-                                @error('status')
+                                @error('publish')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

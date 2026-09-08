@@ -18,28 +18,42 @@
                     <div class="text-center">
                         {{-- Judul berita --}}
                         <h4 class="display-6 fw-semibold">
-                            {{ $news->title }}
+                            {{ $news->heading }}
                         </h4>
                         <div class="d-flex justify-content-between align-items-center px-4 text-start">
                             {{-- Kategori --}}
                             <p>
-                                {{ $news->newsCategory->title }}
+                                {{ $news->flag_kegiatan == 'T' ? 'Berita' : 'Kegiatan' }}
                             </p>
                             {{-- Tanggal publish --}}
                             <p class="">
-                                {{ $news->tgl_publish ? $news->tgl_publish->format('d-m-Y') : 'Belum dipublish' }}
+                                {{ $news->show_since ? $news->show_since->format('d-m-Y') : 'Belum dipublish' }}
                             </p>
                         </div>
                     </div>
                 </div>
-                {{-- Thumbnail --}}
+                {{-- Large Image --}}
+                @if ($news->jns_file === 'image')
                 <div class="text-center mb-4">
+                    {{-- Jika berupa gambar --}}
                     <img
-                        src="{{ asset('storage/' . $news->thumbnail) }}"
-                        alt="thumbnail"
+                        src="{{ asset('storage/' . $news->large_image) }}"
+                        alt="large image"
                         class="img-fluid"
                     />
                 </div>
+                @elseif ($news->jns_file === 'pdf')
+                <div class="mb-4">
+                    {{-- Jika berupa pdf --}}
+                    <div class="show-pdf ratio ratio-16x9 mb-2">
+                        <embed 
+                            src="{{ asset('storage/' . $news->large_image) }}" 
+                            type="application/pdf" 
+                            class="rounded border" 
+                        />
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
         <!-- ROW-1 CLOSED -->
@@ -54,23 +68,11 @@
                             <div class="col-12 my-auto overflow-scroll">
                                 {!! $news->content !!}
                             </div>
-                            {{-- File pendukung --}}
-                            @if ($news->files->isNotEmpty())
-                            <div class="col-12 mt-5">
-                                    <small class="text-muted d-block mb-2">File Pendukung:</small>
-                                    @foreach ($news->files as $file)
-                                    <div class="mb-1">
-                                        <a href="{{ asset('storage/' . $file->file) }}" target="_blank" class="text-primary fs-13">
-                                            Lihat File {{ $loop->iteration }}
-                                        </a>
-                                    </div>
-                                    @endforeach
-                            </div>
-                            @endif
+
                             {{-- Sumber berita --}}
                             <div class="col-12 mt-5 pt-3 border-top d-flex flex-wrap justify-content-between align-items-center">
                                 <div class="fst-italic text-muted">
-                                    <p class="mb-0">Sumber: {{ $news->sumber }}</p>
+                                    <p class="mb-0">Sumber: {{ $news->source }}</p>
                                 </div>
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                     <a href="{{ route('news.index') }}" class="btn btn-light me-2">Kembali</a>

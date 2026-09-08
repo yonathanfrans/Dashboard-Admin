@@ -15,16 +15,16 @@
 
         <!-- ROW-1 -->
         <div class="row">
-            <!-- Total Kategori Berita -->
+            <!-- Total Berita -->
             <div class="col-lg-6 col-md-6 col-sm-12 col-xxl-3">
                 <div class="card overflow-hidden">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-around">
                             <i class="fe fe-inbox text-secondary fs-3"></i> 
                             <div class="text-center">
-                                <h6 class="fw-normal">Total Kategori</h6>
+                                <h6 class="fw-normal">Total Semua Berita</h6>
                                 <h2 class="mb-0 text-dark fw-semibold">
-                                    {{ $jumlahKategori }}
+                                    {{ $jumlahSemuaBerita }}
                                 </h2>
                             </div>
                         </div>
@@ -32,16 +32,16 @@
                 </div>
             </div>
 
-            <!-- Total Berita -->
+            <!-- Total Berita Kegiatan -->
             <div class="col-lg-6 col-md-6 col-sm-12 col-xxl-3">
                 <div class="card overflow-hidden">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-around">
                             <i class="fe fe-layers text-secondary fs-3"></i> 
                             <div class="text-center">
-                                <h6 class="fw-normal">Total Berita</h6>
+                                <h6 class="fw-normal">Total Berita Kegiatan</h6>
                                 <h2 class="mb-0 text-dark fw-semibold">
-                                    {{ $jumlahBerita }}
+                                    {{ $jumlahBeritaKegiatan }}
                                 </h2>
                             </div>
                         </div>
@@ -92,16 +92,16 @@
             <!-- Card Berita terbaru -->
             <div class="col-xl-3">
                 <div class="card custom-card">
-                    <img src="{{ asset('storage/' . $news->thumbnail) }}" class="card-img-top thumbnail-card" alt="Thumbnail berita">
+                    <img src="{{ asset('storage/' . $news->thumbnail_image) }}" class="card-img-top thumbnail-card" alt="Thumbnail berita">
                     <div class="card-body d-flex flex-column">
-                        {{-- Kategori & Tanggal --}}
+                        {{-- Jenis & Tanggal --}}
                         <div class="d-flex justify-content-between align-items-center my-2">
-                            <span class="badge bg-primary fs-8">{{ $news->newsCategory->title ?? 'Uncategorized' }}</span>
+                            <span class="badge bg-primary fs-8">{{ $news->flag_kegiatan == 'T' ? 'Berita' : 'Kegiatan' }}</span>
                             <small class="text-muted fs-11">
-                                {{ $news->tgl_publish ? \Carbon\Carbon::parse($news->tgl_publish)->format('d M Y') : '-' }}
+                                {{ $news->date_news ? \Carbon\Carbon::parse($news->date_news)->format('d M Y') : '-' }}
                             </small>
                         </div>
-                        <h6 class="card-title fw-semibold mb-3 text-truncate">{{ $news->title }}</h6>
+                        <h6 class="card-title fw-semibold mb-3 text-truncate">{{ $news->heading }}</h6>
                         <p class="card-text text-muted fs-13">{{ Str::limit(strip_tags($news->content), 100, '...') }}</p>
                         <a href="{{ route('news.show', $news->slug) }}" class="btn btn-primary">Lihat berita</a>
                     </div>

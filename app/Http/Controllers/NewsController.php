@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
-use App\Models\NewsCategory;
-use App\Models\NewsFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,30 +18,29 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        // Ambil data kategori
-        $categories = NewsCategory::all();
-
-        $news = News::with('newsCategory') // Eager Loading untuk mencegah N+1 query
-            ->when($request->search, function ($query, $search) {
+        $news = News::query() 
+            ->when($request->filled('search'), function ($query) use ($request) {
                 // Filter pencarian judul atau konten
+                $search = $request->search;
+
                 $query->where(function ($query) use ($search) {
-                    $query->where('title', 'ilike', "%{$search}%")
-                        ->orWhere('content', 'ilike', "%{$search}%");
+                    $query->where('heading', 'like', "%{$search}%")
+                        ->orWhere('content', 'like', "%{$search}%");
                 });
             })
-            ->when($request->category_id, function ($query, $categoryId) {
+            ->when($request->filled('flag_kegiatan'), function ($query) use ($request) {
                 // Filter kategori
-                $query->where('news_category_id', $categoryId);
+                $query->where('flag_kegiatan', $request->flag_kegiatan);
             })
-            ->when($request->status, function ($query, $status) {
+            ->when($request->filled('publish'), function ($query) use ($request) {
                 // Filter status
-                $query->where('status', $status);
+                $query->where('publish', $request->publish);
             })
-            ->latest('created_at') // Urutkan berdasarkan berita yang baru dibuat
+            ->latest('entry_date') // Urutkan berdasarkan berita yang baru dibuat
             ->paginate(10)          // Pagination 10 data per halaman
             ->withQueryString();     // Menyimpan parameter URL saat pindah halaman pagination
 
-        return view('news.index', compact('news', 'categories'));
+        return view('news.index', compact('news'));
     }
 
     /**
@@ -51,9 +48,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        $categories = NewsCategory::all();
-
-        return view('news.create', compact('categories'));
+        return view('news.create');
     }
 
     /**
@@ -65,7 +60,7 @@ class NewsController extends Controller
         $validated = $request->validated();
 
         // generate slug
-        $baseSlug = Str::slug($validated['title']);
+        $baseSlug = Str::slug($validated['heading']);
         $slug = $baseSlug;
         $count = 1;
 
@@ -77,28 +72,31 @@ class NewsController extends Controller
         $validated['slug'] = $slug;
 
         // Store thumbnail ke folder
-        $validated['thumbnail'] = $request->file('thumbnail')->store('news/thumbnails', 'public');
+        $validated['thumbnail_image'] = $request->file('thumbnail_image')->store('news/thumbnails', 'public');
 
-        // Hapus files dari validated agar tidak ikut News::create()
-        $files = $validated['files'] ?? [];
-        unset($validated['files']);
+        // Store large image ke folder & jenis file
+        $validated['large_image'] = $request->file('large_image')->store('news/large_images', 'public');
+        $extension = strtolower($request->file('large_image')->getClientOriginalExtension());
+        $validated['jns_file'] = match ($extension) {
+            'jpg', 'jpeg', 'png' => 'image',
+            'pdf' => 'pdf',
+            default => null,
+        };
+        
+        // field date_news otomatis terisi
+        $validated['date_news'] = now()->toDateString();
+        // field show_since otomatis terisi jika publish = Y
+        $validated['show_since'] = $validated['publish'] === 'Y' ? now()->toDateString() : null;
 
-        // otomatis tgl publish
-        if ($validated['status'] === 'Published') {
-            $validated['tgl_publish'] = $validated['tgl_publish'] ?? now();
-        } else {
-            $validated['tgl_publish'] =null;
-        }
+        // field otomatis
+        $validated['off_from'] = null;
+        $validated['video_url'] = null;
+        $validated['video_url_smaller'] = null;
+        $validated['counter'] = 0;
+        $validated['id_user'] = null;
 
         // Simpan ke db
-        $news = News::create($validated);
-
-        // Simpan multiple file
-        foreach ($files as $file) {
-            $path = $file->store('news/files', 'public');
-
-            $news->files()->create(['file' => $path]);
-        }
+        News::create($validated);
 
         return redirect()->route('news.index')->with('success', 'Berita berhasil ditambahkan!');
     }
@@ -108,8 +106,6 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        $news->load('newsCategory', 'files');
-
         return view('news.show', compact('news'));
     }
 
@@ -118,11 +114,7 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        $news->load('files');
-
-        $categories = NewsCategory::all();
-
-        return view('news.update', compact('news', 'categories'));
+        return view('news.update', compact('news'));
     }
 
     /**
@@ -134,8 +126,8 @@ class NewsController extends Controller
         $validated = $request->validated();
 
         // Update slug jika title berubah
-        if ($validated['title'] !== $news->title) {
-            $baseSlug = Str::slug($validated['title']);
+        if ($validated['heading'] !== $news->heading) {
+            $baseSlug = Str::slug($validated['heading']);
             $slug = $baseSlug;
             $count = 1;
 
@@ -147,13 +139,13 @@ class NewsController extends Controller
             $validated['slug'] = $slug;
         }
 
-        // Jika ada upload file thumbnail
-        if ($request->hasFile('thumbnail')) {
+        // Jika ada upload file thumbnail image
+        if ($request->hasFile('thumbnail_image')) {
             // Simpan path file thumbnail lama
-            $oldThumbnail = $news->thumbnail;
+            $oldThumbnail = $news->thumbnail_image;
 
             // simpan thumbnail baru
-            $validated['thumbnail'] = $request->file('thumbnail')->store('news/thumbnails', 'public');
+            $validated['thumbnail_image'] = $request->file('thumbnail_image')->store('news/thumbnails', 'public');
 
             // hapus thumbnail lama dari storage 
             if ($oldThumbnail && Storage::disk('public')->exists($oldThumbnail)) {
@@ -161,26 +153,46 @@ class NewsController extends Controller
             }
         }
 
-        // otomatis tgl publish
-        if ($news->status === 'Unpublished' && $validated['status'] === 'Published') {
-            $validated['tgl_publish'] = now()->toDateString();
-        } elseif ($validated['status'] === 'Unpublished') {
-            $validated['tgl_publish'] =null;
+        // Jika ada upload file large image
+        if ($request->hasFile('large_image')) {
+            // Simpan path file large image lama
+            $oldFile = $news->large_image;
+            
+            // simpan large image baru
+            $validated['large_image'] = $request->file('large_image')->store('news/large_images', 'public');
+
+            // simpan jns_file baru
+            $extension = strtolower($request->file('large_image')->getClientOriginalExtension());
+            $validated['jns_file'] = match ($extension) {
+                'jpg', 'jpeg', 'png' => 'image',
+                'pdf' => 'pdf',
+                default => null,
+            };  
+
+            // hapus large image lama dari storage
+            if ($oldFile && Storage::disk('public')->exists($oldFile)) {
+                Storage::disk('public')->delete($oldFile);
+            }
         }
 
-        // ambil files
-        $files = $validated['files'] ?? [];
-        unset($validated['files']);
+        // otomatis update show since & off from jika publish berubah
+        if ($news->publish === 'T' && $validated['publish'] === 'Y') {
+            $validated['show_since'] = now()->toDateString();
+            $validated['off_from'] = null;
+        } elseif ($news->publish === 'Y' && $validated['publish'] === 'T') {
+            $validated['off_from'] = now()->toDateString();
+            $validated['show_since'] = null; // tetap menggunakan show_since lama
+        }
+
+        // otomatis update date_news jika publish berubah
+        // if ($news->publish === 'T' && $validated['publish'] === 'Y') {
+        //     $validated['date_news'] = now()->toDateString();
+        // } elseif ($news->publish === 'Y' && $validated['publish'] === 'T') {
+        //     $validated['date_news'] = $news->entry_date->toDateString();
+        // }
 
         // Update data berita
         $news->update($validated);
-
-        // tambahkan file baru
-        foreach ($files as $file) {
-            $path = $file->store('news/files', 'public');
-
-            $news->files()->create(['file' => $path]);
-        }
 
         return redirect()->route('news.index')->with('success', 'Berita berhasil diperbarui!');
     }
@@ -191,8 +203,8 @@ class NewsController extends Controller
     public function destroy(News $news)
     {
         // Simpan path file lama sebelum dihapus
-        $thumbnailPath = $news->thumbnail;
-        $filePaths = $news->files()->pluck('file')->toArray();
+        $thumbnailPath = $news->thumbnail_image;
+        $largeImagePath = $news->large_image;
 
         try {
             DB::transaction(function () use ($news) {
@@ -204,11 +216,9 @@ class NewsController extends Controller
                 Storage::disk('public')->delete($thumbnailPath);
             }
 
-            // Hapus semua file
-            foreach ($filePaths as $filePath) {
-                if (Storage::disk('public')->exists($filePath)) {
-                    Storage::disk('public')->delete($filePath);
-                }
+            // Hapus large image dari storage
+            if ($largeImagePath && Storage::disk('public')->exists($largeImagePath)) {
+                Storage::disk('public')->delete($largeImagePath);
             }
 
             return redirect()->route('news.index')->with('success', 'Berita berhasil dihapus!');
@@ -218,29 +228,6 @@ class NewsController extends Controller
             Log::error('Gagal menghapus berita ID ' . $news->id . ": " . $e->getMessage());
 
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus berita. Silahkan coba lagi.');
-        }
-    }
-
-    public function destroyFile(NewsFile $newsFile) 
-    {
-        try {
-            // Simpan path sebelum data dihapus
-            $filePath = $newsFile->file;
-
-            // Hapus record dari database
-            $newsFile->delete();
-
-            // Hapus file dari storage
-            if ($filePath && Storage::disk('public')->exists($filePath)) {
-                Storage::disk('public')->delete($filePath);
-            }
-
-            return redirect()->back()->with('success', 'File berhasil dihapus.');
-        } catch (\Throwable $e) {
-            // error message ke log server
-            Log::error('Gagal menghapus file berita ID' . $newsFile->id . ': ' . $e->getMessage());
-
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus file.');
         }
     }
 }

@@ -52,27 +52,23 @@
                             {{-- Fitur filter --}}
                             <form action="{{ route('news.index') }}" method="GET" class="d-flex align-items-center gap-2">
                                 {{-- Filter status --}}
-                                <select name="status" class="form-select" aria-label="Select status" onchange="this.form.submit()">
+                                <select name="publish" class="form-select" aria-label="Select status" onchange="this.form.submit()">
                                     <option selected disabled>Pilih status</option>
                                     <option value="">Semua status</option>
-                                    <option value="Published" {{ request('status') == 'Published' ? 'selected' : '' }}>Published</option>
-                                    <option value="Unpublished" {{ request('status') == 'Unpublished' ? 'selected' : '' }}>Unpublished</option>
+                                    <option value="Y" {{ request('publish') == 'Y' ? 'selected' : '' }}>Published</option>
+                                    <option value="T" {{ request('publish') == 'T' ? 'selected' : '' }}>Unpublished</option>
                                 </select>
-                                {{-- Filter kategori --}}
-                                <select name="category_id" class="form-select" aria-label="Select category" onchange="this.form.submit()">
-                                    <option selected disabled>Pilih kategori</option>
-                                    <option value="">Semua kategori</option>
-                                    @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->title }}
-                                    </option>
-                                    @endforeach
+                                {{-- Filter jenis berita --}}
+                                <select name="flag_kegiatan" class="form-select" aria-label="Select kegiatan" onchange="this.form.submit()">
+                                    <option selected disabled>Pilih jenis</option>
+                                    <option value="">Semua jenis</option>
+                                    <option value="T" {{ request('flag_kegiatan') == 'T' ? 'selected' : '' }}>Berita</option>
+                                    <option value="Y" {{ request('flag_kegiatan') == 'Y' ? 'selected' : '' }}>Kegiatan</option>
                                 </select>
                                 {{-- Filter search --}}
                                 <input type="search" name="search" class="form-control" placeholder="Cari berita..." value="{{ request('search') }}">
                             </form>
                         </div>
-                        
 
                         <div class="tab-content">
                             <div class="tab-pane border-0 p-0 active" id="tab5">
@@ -83,7 +79,7 @@
                                             <tr>
                                                 <th class="text-center" scope="col">No</th>
                                                 <th scope="col">Title</th>
-                                                <th scope="col">Kategori</th>
+                                                <th scope="col">Jenis</th>
                                                 <th scope="col">Sumber</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Action</th>
@@ -94,11 +90,11 @@
                                             @forelse ($news as $item)
                                             <tr>
                                                 <th class="text-center" scope="row">{{ $news->firstItem() + $loop->index }}</th>
-                                                <td>{{ Str::limit($item->title, 50) }}</td>
-                                                <td>{{ $item->newsCategory->title ?? 'Belum ada kategori' }}</td>
-                                                <td>{{ $item->sumber }}</td>
+                                                <td>{{ Str::limit($item->heading, 50) }}</td>
+                                                <td>{{ $item->flag_kegiatan === 'Y' ? 'Kegiatan' : 'Berita' }}</td>
+                                                <td>{{ $item->source }}</td>
                                                 <td>
-                                                    @if ($item->status == 'Published')
+                                                    @if ($item->publish == 'Y')
                                                         <span class="badge bg-success-transparent rounded-pill text-success p-2 px-3">Published</span>
                                                     @else
                                                         <span class="badge bg-danger-transparent rounded-pill text-danger p-2 px-3">Unpublished</span>
@@ -106,15 +102,15 @@
                                                 </td>
                                                 <td>
                                                     <div class="g-2">
-                                                        <a href="{{ route('news.show', $item->slug) }}" class="btn text-dark btn-sm" data-bs-toggle="tooltip" data-bs-original-title="View">
+                                                        <a href="{{ route('news.show', $item->id) }}" class="btn text-dark btn-sm" data-bs-toggle="tooltip" data-bs-original-title="View">
                                                             <span class="fe fe-eye fs-14"></span>
                                                         </a>
 
-                                                        <a href="{{ route('news.edit', $item->slug) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
+                                                        <a href="{{ route('news.edit', $item->id) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
                                                             <span class="fe fe-edit fs-14"></span>
                                                         </a>
 
-                                                        <button class="btn text-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteNewsModal" data-bs-original-title="Delete" data-id="{{ $item->id }}" data-title="{{ $item->title }}">
+                                                        <button class="btn text-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteNewsModal" data-bs-original-title="Delete" data-id="{{ $item->id }}" data-title="{{ $item->heading }}">
                                                             <span class="fe fe-trash-2 fs-14"></span>
                                                         </button>
                                                     </div>
@@ -135,15 +131,17 @@
 
                         <!-- Pagination -->
                         <div class="row mt-3">
+                            @if ($news->total() < 11) 
                             <div class="col-sm-12 col-md-6 my-auto">
                                 <span>Showing {{ $news->firstItem() ?? 0 }} to {{ $news->lastItem() ?? 0 }} of {{ $news->total() }} entries</span>
                             </div>
-
-                            <div class="col-sm-12 col-md-6">
-                                <div class="d-flex justify-content-end">
-                                    {{ $news->links() }}
+                            @else
+                            <div class="col-sm-12">
+                                <div class="d-flex flex-row justify-content-end">
+                                    {{ $news->links('pagination::bootstrap-5') }}
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -188,4 +186,3 @@
 <script src="{{ asset('assets/js/modalCRUD.js') }}"></script>
     
 @endpush
-

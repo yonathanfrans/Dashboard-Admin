@@ -44,65 +44,106 @@
                             </button>
                         </div>
                         @endif
-                        <form action="{{ route('news.update', $news->slug) }}" method="POST" enctype="multipart/form-data" id="newsForm" class="row g-3 mt-0">
+                        <form action="{{ route('news.update', $news->id) }}" method="POST" enctype="multipart/form-data" id="newsForm" class="row g-3 mt-0">
                             @csrf
                             @method('PATCH')
 
                             <div class="col-md-9">
                                 {{-- Judul Berita --}}
-                                <label for="title" class="form-label">Judul Berita</label>
+                                <label for="heading" class="form-label">Judul Berita</label>
                                 <input
                                     type="text"
-                                    class="form-control @error('title') is-invalid @enderror"
-                                    name="title"
-                                    id="title"
+                                    class="form-control @error('heading') is-invalid @enderror"
+                                    name="heading"
+                                    id="heading"
                                     placeholder="Masukkan judul berita.."
-                                    value="{{ old('title', $news->title) }}"
-                                    aria-label="Title"
+                                    value="{{ old('heading', $news->heading) }}"
+                                    aria-label="Heading"
                                     required
                                 />
-                                @error('title')
+                                @error('heading')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            {{-- Kategori Berita --}}
+
+                            {{-- Jenis Berita --}}
                             <div class="col-md-3">
-                                <label for="news_category_id" class="form-label">Kategori Berita</label>
-                                <select name="news_category_id" class="form-select @error('news_category_id') is-invalid @enderror" aria-label="Select category" required>
-                                    <option disabled>Pilih kategori</option>
-                                     @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('news_category_id', $news->news_category_id) == $category->id ? 'selected' : '' }}>
-                                        {{ $category->title }}
-                                    </option>
-                                    @endforeach
+                                <label for="flag_kegiatan" class="form-label">Jenis Berita</label>
+                                <select name="flag_kegiatan" class="form-select @error('flag_kegiatan') is-invalid @enderror" aria-label="Select type" required>
+                                    <option selected disabled>Pilih jenis</option>
+                                    <option value="T" {{ old('flag_kegiatan', $news->flag_kegiatan) == 'T' ? 'selected' : '' }}>Berita</option>
+                                    <option value="Y" {{ old('flag_kegiatan', $news->flag_kegiatan) == 'Y' ? 'selected' : '' }}>Kegiatan</option>
                                 </select>
-                                @error('news_category_id')
+                                @error('flag_kegiatan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            {{-- Thumbnail --}}
+
+                            {{-- Thumbnail Image --}}
                             <div class="col-md-6">
-                                <label for="thumbnail" class="form-label">Thumbnail</label>
+                                <label for="thumbnail_image" class="form-label">Gambar Sampul (Thumbnail List)</label>
                                 <input
                                     type="file"
-                                    class="form-control @error('thumbnail') is-invalid @enderror"
-                                    name="thumbnail"
-                                    id="thumbnail"
+                                    class="form-control @error('thumbnail_image') is-invalid @enderror"
+                                    name="thumbnail_image"
+                                    id="thumbnail_image"
                                     accept=".png,.jpg,.jpeg"
                                 />
                                 <p class="fs-12 p-2 fw-light">Biarkan kosong jika tidak diubah. Allowed (PNG, JPG, JPEG) & Max 2MB</p>
-                                @error('thumbnail')
+                                @error('thumbnail_image')
                                 <div class="text-danger fs-12 ms-2">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                @if ($news->thumbnail)
+                                {{-- Preview Thumbnail --}}
+                                @if ($news->thumbnail_image)
                                 <div class="mt-2">
-                                    <small class="text-muted d-block">Thumbnail saat ini:</small>
-                                    <img src="{{ asset('storage/' . $news->thumbnail) }}" alt="Thumbnail" class="img-thumbnail">
+                                    <small class="text-muted d-block">Gambar Sampul saat ini:</small>
+                                    <div class="show-thumbnail">
+                                        <img src="{{ asset('storage/' . $news->thumbnail_image) }}" alt="Thumbnail" class="img-thumbnail" />
+                                    </div>
                                 </div>
                                 @endif
                             </div>
+
+                            {{-- Large Image --}}
+                            <div class="col-md-6">
+                                <label for="large_image" class="form-label">Dokumen / Gambar Utama (Isi Berita)</label>
+                                <input
+                                    type="file"
+                                    class="form-control @error('large_image') is-invalid @enderror"
+                                    name="large_image"
+                                    id="large_image"
+                                    accept=".png,.jpg,.jpeg,.pdf"
+                                />
+                                <p class="fs-12 p-2 fw-light">Biarkan kosong jika tidak diubah. Allowed (PNG, JPG, JPEG, PDF) & Max 5MB</p>
+                                @error('large_image')
+                                <div class="text-danger fs-12 ms-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                {{-- Preview Large Image --}}
+                                @if ($news->jns_file === 'image')
+                                <div class="mt-2">
+                                    <small class="text-muted d-block">Gambar Utama saat ini:</small>
+                                    <div class="show-thumbnail">
+                                        <img src="{{ asset('storage/' . $news->large_image) }}" alt="Large Image" class="img-thumbnail" />
+                                    </div>
+                                </div>
+                                @elseif ($news->jns_file === 'pdf')
+                                <div class="mt-2">
+                                    <small class="text-muted d-block">Dokumen saat ini:</small>
+                                    <div class="show-pdf ratio ratio-16x9 mb-2">
+                                        <embed 
+                                            src="{{ asset('storage/' . $news->large_image) }}" 
+                                            type="application/pdf" 
+                                            class="rounded border" 
+                                        />
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+
                             {{-- Isi berita --}}
                             <div class="col-12">
                                 <label for="editor" class="form-label">Isi Berita</label>
@@ -112,90 +153,61 @@
                                 <div class="text-danger fs-12 mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-                            {{-- File pendukung --}}
-                            <div class="col-md-4">
-                                <label for="files" class="form-label">File Pendukung</label>
+
+                            {{-- Sumber berita --}}
+                            <div class="col-md-6">
+                                <label for="source" class="form-label">Sumber</label>
                                 <input
-                                    type="file"
-                                    name="files[]"
-                                    class="form-control @error('files.*') is-invalid @enderror"
-                                    id="files"
-                                    accept=".pdf,.png,.jpg,.jpeg"
-                                    multiple
+                                    type="text"
+                                    name="source"
+                                    class="form-control @error('source') is-invalid @enderror"
+                                    id="source"
+                                    placeholder="Masukkan sumber berita..."
+                                    value="{{ old('source', $news->source) }}"
+                                    required
                                 />
-                                <p class="fs-12 p-2 fw-light">Biarkan kosong jika tidak diubah. Allowed (PDF, PNG, JPG, JPEG) & Max 5MB per file</p>
-                                @if ($news->files->count())
-                                <div class="mt-3">
-                                    <small class="text-muted d-block mb-2">File saat ini:</small>
-                                    @foreach ($news->files as $file)
-                                    <div class="d-flex align-items-center gap-2 mb-2">
-                                        {{-- Lihat File --}}
-                                        <a href="{{ asset('storage/' . $file->file) }}" target="_blank" class="text-primary fs-13">
-                                            Lihat File {{ $loop->iteration }}
-                                        </a>
-                                        {{-- Hapus File --}}
-                                        <button type="button" class="btn btn-sm text-danger" data-bs-toggle="modal" data-bs-target="#deleteFileModal" data-id="{{ $file->id }}" data-file="File {{ $loop->iteration }}">
-                                            <span class="fe fe-trash-2 fs-14x"></span>
-                                        </button>
-                                    </div>
-                                    @endforeach
-                                </div>
-                                @endif
-                                @error('files.*')
-                                <div class="text-danger fs-12 ms-2">{{ $message }}</div>
+                                @error('source')
+                                <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            {{-- Sumber berita --}}
-                            <div class="col-md-4">
-                                <label for="sumber" class="form-label">Sumber</label>
-                                <input
-                                    type="text"
-                                    name="sumber"
-                                    class="form-control @error('sumber') is-invalid @enderror"
-                                    id="sumber"
-                                    placeholder="Masukkan sumber berita..."
-                                    value="{{ old('sumber', $news->sumber) }}"
-                                    required
-                                />
-                                @error('sumber')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
                             {{-- Status berita --}}
-                            <div class="col-md-2">
-                                <label for="status" class="form-label">Status</label>
-                                <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" aria-label="Select status" required>
-                                    <option value="Unpublished" {{ old('status', $news->status) == 'Unpublished' ? 'selected' : '' }}>Unpublished</option>
-                                    <option value="Published" {{ old('status', $news->status) == 'Published' ? 'selected' : '' }}>Published</option>
+                            <div class="col-md-4">
+                                <label for="publish" class="form-label">Status</label>
+                                <select name="publish" id="publish" class="form-select @error('publish') is-invalid @enderror" aria-label="Select status" required>
+                                    <option value="T" {{ old('publish', $news->publish) == 'T' ? 'selected' : '' }}>Unpublished</option>
+                                    <option value="Y" {{ old('publish', $news->publish) == 'Y' ? 'selected' : '' }}>Published</option>
                                 </select>
-                                @error('status')
+                                @error('publish')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
                             {{-- Tanggal dibuat --}}
                             <div class="col-md-4">
-                                <label for="tgl-dibuat" class="form-label">Tanggal Dibuat</label>
+                                <label for="date_news" class="form-label">Tanggal Dibuat</label>
                                 <input
                                     type="text"
                                     class="form-control"
-                                    id="tgl-dibuat"
-                                    value="{{ $news->created_at?->format('d-m-Y') }}"
+                                    id="date_news"
+                                    value="{{ $news->date_news?->format('d-m-Y') }}"
                                     readonly
                                 />
                             </div>
+
                             {{-- Tanggal publish --}}
                             <div class="col-md-4">
-                                <label for="tgl-publish" class="form-label">Tanggal Publish</label>
+                                <label for="show_since" class="form-label">Tanggal Publish</label>
                                 <input
                                     type="text"
                                     class="form-control"
-                                    id="tgl-publish"
-                                    value="{{ $news->tgl_publish?->format('d-m-Y') }}"
+                                    id="show_since"
+                                    value="{{ $news->show_since?->format('d-m-Y')  }}"
                                     readonly
                                 />
                             </div>
-                            <div class="col-12 text-center">
+
+                            <div class="col-12 text-center mt-5">
                                 <a href="{{ route('news.index') }}" class="btn btn-light me-2">Batal</a>
                                 <button type="submit" class="btn btn-primary">
                                     Simpan
