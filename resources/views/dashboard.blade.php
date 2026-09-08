@@ -103,7 +103,7 @@
                         </div>
                         <h6 class="card-title fw-semibold mb-3 text-truncate">{{ $news->heading }}</h6>
                         <p class="card-text text-muted fs-13">{{ Str::limit(strip_tags($news->content), 100, '...') }}</p>
-                        <a href="{{ route('news.show', $news->slug) }}" class="btn btn-primary">Lihat berita</a>
+                        <a href="{{ route('news.show', $news) }}" class="btn btn-primary">Lihat berita</a>
                     </div>
                 </div>
             </div>

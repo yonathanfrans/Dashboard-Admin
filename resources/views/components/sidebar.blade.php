@@ -79,6 +79,27 @@
 
                 <!-- Start::slide__category -->
                 <li class="slide__category">
+                    <span class="category-name">FAQ</span>
+                </li>
+                <!-- End::slide__category -->
+
+                <!-- Start::slide -->
+                <li class="slide">
+                    <a href="#" class="side-menu__item">
+                        <i class="fe fe-file-text side-menu__icon"></i>
+                        <span class="side-menu__label">Kategori FAQ</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a href="#" class="side-menu__item">
+                        <i class="fe fe-file-text side-menu__icon"></i>
+                        <span class="side-menu__label">Daftar FAQ</span>
+                    </a>
+                </li>
+                <!-- End::slide -->
+
+                <!-- Start::slide__category -->
+                <li class="slide__category">
                     <span class="category-name">Izin Kapal</span>
                 </li>
                 <!-- End::slide__category -->

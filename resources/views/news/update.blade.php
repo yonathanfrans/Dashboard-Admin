@@ -44,7 +44,7 @@
                             </button>
                         </div>
                         @endif
-                        <form action="{{ route('news.update', $news->id) }}" method="POST" enctype="multipart/form-data" id="newsForm" class="row g-3 mt-0">
+                        <form action="{{ route('news.update', $news) }}" method="POST" enctype="multipart/form-data" id="newsForm" class="row g-3 mt-0">
                             @csrf
                             @method('PATCH')
 

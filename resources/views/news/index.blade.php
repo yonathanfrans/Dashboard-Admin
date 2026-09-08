@@ -102,15 +102,15 @@
                                                 </td>
                                                 <td>
                                                     <div class="g-2">
-                                                        <a href="{{ route('news.show', $item->id) }}" class="btn text-dark btn-sm" data-bs-toggle="tooltip" data-bs-original-title="View">
+                                                        <a href="{{ route('news.show', $item) }}" class="btn text-dark btn-sm" data-bs-toggle="tooltip" data-bs-original-title="View">
                                                             <span class="fe fe-eye fs-14"></span>
                                                         </a>
 
-                                                        <a href="{{ route('news.edit', $item->id) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
+                                                        <a href="{{ route('news.edit', $item) }}" class="btn text-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
                                                             <span class="fe fe-edit fs-14"></span>
                                                         </a>
 
-                                                        <button class="btn text-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteNewsModal" data-bs-original-title="Delete" data-id="{{ $item->id }}" data-title="{{ $item->heading }}">
+                                                        <button class="btn text-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteNewsModal" data-bs-original-title="Delete" data-id="{{ $item->getRouteKey() }}" data-title="{{ $item->heading }}">
                                                             <span class="fe fe-trash-2 fs-14"></span>
                                                         </button>
                                                     </div>
