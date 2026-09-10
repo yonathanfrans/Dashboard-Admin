@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Services\LoginApiService;
 use App\Services\EncryptionService;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;

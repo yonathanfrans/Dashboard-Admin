@@ -11,8 +11,6 @@ class LoginApiService
 
     public function __construct(EncryptionService $encryptionService)
     {
-        // date_default_timezone_set('Asia/Jakarta');
-
         $this->url = config('services.login_api.url');
         $this->encryptionService = $encryptionService;
     }
