@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FaqMenuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
@@ -34,5 +35,14 @@ Route::middleware('api.auth')->group(function () {
     Route::delete('/dashboard/news/{news}', [NewsController::class, 'destroy'])->name('news.delete');
     // Route Show News
     Route::get('/dashboard/news/{news}', [NewsController::class, 'show'])->name('news.show');
-    
+
+    // Route Index Kategori FAQ
+    Route::get('/dashboard/faq-menus', [FaqMenuController::class, 'index'])->name('faqMenu.index');
+    // Route Create Kategori FAQ
+    Route::post('/dashboard/faq-menus', [FaqMenuController::class, 'store'])->name('faqMenu.store');
+    // Route Update Kategori FAQ
+    Route::patch('/dashboard/faq-menus/{faqMenu}', [FaqMenuController::class, 'update'])->name('faqMenu.update');
+    // Route Delete Kategori FAQ
+    Route::delete('/dashboard/faq-menus/{faqMenu}', [FaqMenuController::class, 'destroy'])->name('faqMenu.delete');
+
 });

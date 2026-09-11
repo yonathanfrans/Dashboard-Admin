@@ -85,7 +85,7 @@
 
                 <!-- Start::slide -->
                 <li class="slide">
-                    <a href="#" class="side-menu__item">
+                    <a href="{{ route('faqMenu.index') }}" class="side-menu__item {{ request()->routeIs('faqMenu.*') ? 'active' : '' }}">
                         <i class="fe fe-file-text side-menu__icon"></i>
                         <span class="side-menu__label">Kategori FAQ</span>
                     </a>
