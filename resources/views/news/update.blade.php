@@ -219,33 +219,6 @@
             </div>
         </div>
     </div>
-    {{-- Start Modal Delete --}}
-    <div class="modal fade" id="deleteFileModal" tabindex="-1" aria-labelledby="deleteFileModalLabel" data-bs-keyboard="false" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" class="modal-content">
-                @csrf
-                @method('DELETE')
-                {{-- Modal Header --}}
-                <div class="modal-header">
-                    <h6 class="modal-title" id="deleteFileModalLabel">Hapus File</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                {{-- Modal Body --}}
-                <div class="modal-body text-center">
-                    <i class="fe fe-alert-circle fs-1 text-danger d-block mb-3"></i>
-                    <p class="mb-0">Apakah anda yakin ingin menghapus file ini?</p>
-                    <strong id="delete-file-name"></strong>
-                </div>
-                
-                {{-- Modal footer --}}
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Hapus</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    {{-- End Modal Delete --}}
 </div>
 <!-- End::app-content -->
 
