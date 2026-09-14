@@ -103,7 +103,7 @@
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#editCategoryFaqModal" 
                                                             data-bs-original-title="Edit" 
-                                                            data-id="{{ $faqMenu->id_sub }}" 
+                                                            data-id="{{ $faqMenu->getRouteKey() }}" 
                                                             data-menu="{{ $faqMenu->menu }}"
                                                             data-sub-menu="{{ $faqMenu->sub_menu }}"
                                                             data-aktif="{{ $faqMenu->aktif }}">
@@ -115,7 +115,7 @@
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#deleteCategoryFaqModal" 
                                                             data-bs-original-title="Delete" 
-                                                            data-id="{{ $faqMenu->id_sub }}" 
+                                                            data-id="{{ $faqMenu->getRouteKey() }}" 
                                                             data-sub-menu="{{ $faqMenu->sub_menu }}">
                                                             <span class="fe fe-trash-2 fs-14"></span>
                                                         </button>
