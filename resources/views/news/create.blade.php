@@ -128,10 +128,11 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-12 text-center">
+                            <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-4">
                                 <button type="submit" class="btn btn-primary">
                                     Simpan
                                 </button>
+                                <a href="{{ route('news.index') }}" class="btn btn-light me-2">Kembali</a>
                             </div>
                         </form>
                     </div>
