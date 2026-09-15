@@ -126,7 +126,7 @@ class FaqMenuController extends Controller
 
         // Tolak penghapusan jika masih ada pertanyaan terkait dengan kategori
         if ($faqMenu->faqs()->exists()) {
-            return redirect()->route('faq-menu.index')->with('error', 'Kategori ' . $menu . ' tidak dapat dihapus karena masih memiliki pertanyaan terkait!');
+            return redirect()->back()->with('error', 'Kategori ' . $menu . ' tidak dapat dihapus karena masih memiliki pertanyaan terkait!');
         }
 
         DB::transaction(function () use ($faqMenu, $menu, $noUrut) {
