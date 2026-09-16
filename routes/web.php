@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FaqMenuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NewsController;
@@ -44,5 +45,16 @@ Route::middleware('api.auth')->group(function () {
     Route::patch('/dashboard/faq-menus/{faqMenu}', [FaqMenuController::class, 'update'])->name('faqMenu.update');
     // Route Delete Kategori FAQ
     Route::delete('/dashboard/faq-menus/{faqMenu}', [FaqMenuController::class, 'destroy'])->name('faqMenu.delete');
+
+    // Route Index FAQ
+    Route::get('/dashboard/faq', [FaqController::class, 'index'])->name('faq.index');
+    // Route Create FAQ
+    Route::get('/dashboard/faq/create', [FaqController::class, 'create'])->name('faq.create');
+    Route::post('/dashboard/faq', [FaqController::class, 'store'])->name('faq.store');
+    // Route Update FAQ
+    Route::get('/dashboard/faq/{faq}/edit', [FaqController::class, 'edit'])->name('faq.edit');
+    Route::patch('/dashboard/faq/{faq}', [FaqController::class, 'update'])->name('faq.update');
+    // Route Delete FAQ
+    Route::delete('/dashboard/faq/{faq}', [FaqController::class, 'destroy'])->name('faq.delete');
 
 });

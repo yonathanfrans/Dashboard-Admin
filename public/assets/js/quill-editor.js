@@ -35,7 +35,7 @@
         theme: "snow",
     });
 
-    /* Isi quill -> textarea content */
+    /* Isi quill -> textarea content news */
     const form = document.getElementById("newsForm");
     const content = document.getElementById("content");
 
@@ -49,6 +49,22 @@
                 content.value = quill.root.innerHTML;
             }
 
+        });
+    }
+
+    // Isi quill -> textarea jawaban FAQ
+    const formFAQ = document.getElementById("faqForm");
+    const jawaban = document.getElementById("jawaban");
+
+    if (formFAQ && jawaban) {
+        formFAQ.addEventListener("submit", function () {
+            const textJawaban = quill.getText().trim();
+
+            if (!textJawaban) {
+                jawaban.value = '';
+            } else {
+                jawaban.value = quill.root.innerHTML;
+            }
         });
     }
     

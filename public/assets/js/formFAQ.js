@@ -38,3 +38,22 @@ setupMenuToggle(
     "create-category-faq-menu-hidden",
     "createCategoryFaqForm"
 );
+
+document.addEventListener('DOMContentLoaded', function() {
+    const jenisSelect = document.getElementById('faq-jenis-select');
+    const fieldJawaban = document.getElementById('field-jawaban');
+    const fieldLink = document.getElementById('field-link');
+
+    function toggleFields() {
+        if (jenisSelect.value === 'pdf') {
+            fieldLink.classList.remove('d-none');
+            fieldJawaban.classList.add('d-none');
+        } else if (jenisSelect.value === 'Menu') {
+            fieldJawaban.classList.remove('d-none');
+            fieldLink.classList.add('d-none');
+        }
+    }
+
+    jenisSelect.addEventListener('change', toggleFields);
+    toggleFields();
+});

@@ -86,13 +86,13 @@
                 <!-- Start::slide -->
                 <li class="slide">
                     <a href="{{ route('faqMenu.index') }}" class="side-menu__item {{ request()->routeIs('faqMenu.*') ? 'active' : '' }}">
-                        <i class="fe fe-file-text side-menu__icon"></i>
+                        <i class="fe fe-help-circle side-menu__icon"></i>
                         <span class="side-menu__label">Kategori FAQ</span>
                     </a>
                 </li>
                 <li class="slide">
-                    <a href="#" class="side-menu__item">
-                        <i class="fe fe-file-text side-menu__icon"></i>
+                    <a href="{{ route('faq.index') }}" class="side-menu__item {{ request()->routeIs('faq.*') ? 'active' : '' }}">
+                        <i class="ri-file-unknow-line side-menu__icon"></i>
                         <span class="side-menu__label">Daftar FAQ</span>
                     </a>
                 </li>

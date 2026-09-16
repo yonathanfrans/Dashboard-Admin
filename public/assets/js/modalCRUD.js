@@ -36,6 +36,23 @@ if (deleteCategoryFaqModal) {
     });
 }
 
+// Handling Modal Delete FAQ
+const deleteFaqModal = document.getElementById("deleteFaqModal");
+if (deleteFaqModal) {
+    deleteFaqModal.addEventListener("show.bs.modal", function (event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute("data-id");
+        const pertanyaan = button.getAttribute("data-pertanyaan");
+
+        const form = deleteFaqModal.querySelector("#deleteFaqForm");
+        form.action = `/dashboard/faq/${id}`;
+
+        deleteFaqModal.querySelector(
+            "#delete-faq",
+        ).textContent = pertanyaan;
+    });
+}
+
 // Handling Modal Delete News
 const deleteNewsModal = document.getElementById("deleteNewsModal");
 if (deleteNewsModal) {
