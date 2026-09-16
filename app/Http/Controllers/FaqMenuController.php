@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateFaqMenuRequest;
 use App\Models\FaqMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class FaqMenuController extends Controller
 {
@@ -129,16 +130,25 @@ class FaqMenuController extends Controller
             return redirect()->back()->with('error', 'Kategori ' . $menu . ' tidak dapat dihapus karena masih memiliki pertanyaan terkait!');
         }
 
-        DB::transaction(function () use ($faqMenu, $menu, $noUrut) {
-            // Hapus kategori FAQ
-            $faqMenu->delete();
+        try {
+            DB::transaction(function () use ($faqMenu, $menu, $noUrut) {
+                // Hapus kategori FAQ
+                $faqMenu->delete();
+        
+                // Rapihkan kembali no_urut item sisanya
+                FaqMenu::where('menu', $menu)
+                    ->where('no_urut', '>', $noUrut)
+                    ->decrement('no_urut');
+            });
     
-            // Rapihkan kembali no_urut item sisanya
-            FaqMenu::where('menu', $menu)
-                ->where('no_urut', '>', $noUrut)
-                ->decrement('no_urut');
-        });
+            return redirect()->back()->with('success', 'Kategori FAQ berhasil dihapus!');
 
-        return redirect()->back()->with('success', 'Kategori FAQ berhasil dihapus!');
+        } catch (\Throwable $e) {
+            // Error message ke log server
+            Log::error('Gagal menghapus kategori FAQ ID ' . $faqMenu->id_sub . ": " . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus kategori FAQ. Silahkan coba lagi.');
+        }
+
     }
 }

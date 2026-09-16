@@ -182,7 +182,7 @@ class FaqController extends Controller
                 Storage::disk('public')->delete($oldFile);
             }
             
-            return redirect()->route('faq.index')->with('success', 'FAQ berhasil dihapus!');
+            return redirect()->back()->with('success', 'FAQ berhasil dihapus!');
         } catch (\Throwable $e) {
             // Error message ke log server
             Log::error('Gagal menghapus FAQ ID ' . $faq->id . ": " . $e->getMessage());

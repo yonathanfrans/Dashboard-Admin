@@ -221,7 +221,7 @@ class NewsController extends Controller
                 Storage::disk('public')->delete($largeImagePath);
             }
 
-            return redirect()->route('news.index')->with('success', 'Berita berhasil dihapus!');
+            return redirect()->back()->with('success', 'Berita berhasil dihapus!');
             
         } catch (\Throwable $e) {
             // error message ke log server
