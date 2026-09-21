@@ -67,3 +67,20 @@ if (deleteNewsModal) {
         deleteNewsModal.querySelector("#delete-news-title").textContent = title;
     })
 }
+
+// Handling Modal Delete Access Request
+const deleteAccessRequestModal = document.getElementById("deleteAccessRequestModal");
+if (deleteAccessRequestModal) {
+    deleteAccessRequestModal.addEventListener("show.bs.modal", function (event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute("data-id");
+        const nama = button.getAttribute("data-nama");
+
+        const form = deleteAccessRequestModal.querySelector("#deleteAccessRequestForm");
+        form.action = `/dashboard/access-request/${id}`;
+
+        deleteAccessRequestModal.querySelector(
+            "#delete-access-request",
+        ).textContent = nama;
+    });
+}

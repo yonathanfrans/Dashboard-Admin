@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessRequestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FaqMenuController;
@@ -56,5 +57,16 @@ Route::middleware('api.auth')->group(function () {
     Route::patch('/dashboard/faq/{faq}', [FaqController::class, 'update'])->name('faq.update');
     // Route Delete FAQ
     Route::delete('/dashboard/faq/{faq}', [FaqController::class, 'destroy'])->name('faq.delete');
+
+    // Route Index Access Request
+    Route::get('/dashboard/access-request', [AccessRequestController::class, 'index'])->name('accessRequest.index');
+    // Route Create Access Request
+    Route::get('/dashboard/access-request/create', [AccessRequestController::class, 'create'])->name('accessRequest.create');
+    Route::post('/dashboard/access-request', [AccessRequestController::class, 'store'])->name('accessRequest.store');
+    // Route Update Access Request
+    Route::get('/dashboard/access-request/{accessRequest}/edit', [AccessRequestController::class, 'edit'])->name('accessRequest.edit');
+    Route::patch('/dashboard/access-request/{accessRequest}', [AccessRequestController::class, 'update'])->name('accessRequest.update');
+    // Route Delete Access Request
+    Route::delete('/dashboard/access-request/{accessRequest}', [AccessRequestController::class, 'destroy'])->name('accessRequest.delete');
 
 });

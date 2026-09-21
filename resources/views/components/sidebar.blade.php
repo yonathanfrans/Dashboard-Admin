@@ -100,6 +100,21 @@
 
                 <!-- Start::slide__category -->
                 <li class="slide__category">
+                    <span class="category-name">API Management</span>
+                </li>
+                <!-- End::slide__category -->
+
+                <!-- Start::slide -->
+                <li class="slide">
+                    <a href="{{ route('accessRequest.index') }}" class="side-menu__item {{ request()->routeIs('accessRequest.*') ? 'active' : '' }}">
+                        <i class="fe fe-help-circle side-menu__icon"></i>
+                        <span class="side-menu__label">Permohonan Hak Akses</span>
+                    </a>
+                </li>
+                <!-- End::slide -->
+
+                <!-- Start::slide__category -->
+                <li class="slide__category">
                     <span class="category-name">Izin Kapal</span>
                 </li>
                 <!-- End::slide__category -->
