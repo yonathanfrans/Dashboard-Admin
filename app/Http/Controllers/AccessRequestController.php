@@ -66,9 +66,24 @@ class AccessRequestController extends Controller
         // generate nomor formulir otomatis
         if ($request->jns_permintaan === 'pendaftaran') {
             $today = now()->format('Ymd');
-            $count = AccessRequest::whereDate('date_created', now())->count() + 1;
-            $nomorFormulir = 'REQ/' . $today . '/' . str_pad($count, 4, '0', STR_PAD_LEFT);
-            $validated['nomor_formulir'] = $nomorFormulir;
+            $prefix = 'REQ/' . $today . '/';
+
+            // Cari record terakhir yang dibuat pada hari ini
+            $lastRequest = AccessRequest::whereDate('date_created', now())
+                ->where('nomor_formulir', 'like', $prefix . '%')
+                ->orderBy('nomor_formulir', 'desc')
+                ->first();
+            
+            if ($lastRequest) {
+                // Ambil 4 digit terakhir dari no formulir terakhir, lalu ditambahkan 1
+                $lastSequence = (int) substr($lastRequest->nomor_formulir, -4);
+                $nextSequence = $lastSequence + 1;
+            } else {
+                // Jika belum ada data di hari ini, mulai dari 1
+                $nextSequence = 1;
+            }
+
+            $validated['nomor_formulir'] = $prefix . str_pad($nextSequence, 4, '0', STR_PAD_LEFT);
         }
 
         // Handle file

@@ -50,7 +50,6 @@
                                 Tambah Permohonan +
                             </a>
                             {{-- Fitur filter --}}
-                            @use('App\Helpers\HashId')
                             <form action="{{ route('accessRequest.index') }}" method="GET" class="d-flex align-items-center gap-2">
                                 {{-- Filter Jenis Permintaan --}}
                                 <select name="jns_permintaan" class="form-select" aria-label="Select type" onchange="this.form.submit()">
@@ -151,7 +150,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="8" class="text-center">
+                                                <td colspan="9" class="text-center">
                                                     Belum ada Permohonan.
                                                 </td>
                                             </tr>
