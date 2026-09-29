@@ -106,6 +106,7 @@
                                                             data-id="{{ $faqMenu->getRouteKey() }}" 
                                                             data-menu="{{ $faqMenu->menu }}"
                                                             data-sub-menu="{{ $faqMenu->sub_menu }}"
+                                                            data-no-urut="{{ $faqMenu->no_urut }}"
                                                             data-aktif="{{ $faqMenu->aktif }}">
                                                             <span class="fe fe-edit fs-14"></span>
                                                         </button>
@@ -297,17 +298,34 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="mb-3">
+                            <label for="update-category-faq-no-urut" class="form-label fs-14 text-dark">No Urut</label>
+                            <input
+                                type="number"
+                                min="1"
+                                class="form-control @error('no_urut') is-invalid @enderror"
+                                id="update-category-faq-no-urut"
+                                name="no_urut"
+                                placeholder="Masukkan no urut..."
+                                required
+                            />
+                            @error('no_urut')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
                         <div class="mb-3">
                             <label for="update-category-faq-status" class="form-label fs-14 text-dark">Pilih Status</label>
                             <select name="aktif" id="update-category-faq-status" class="form-select @error('aktif') is-invalid @enderror" aria-label="Select status" required>
                                 <option value="T" {{ old('aktif') == 'T' ? 'selected' : '' }}>Inactive</option>
                                 <option value="Y" {{ old('aktif') == 'Y' ? 'selected' : '' }}>Active</option>
                             </select>
+                            @error('status')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
-                        @error('status')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
                     </div>
                 </div>
 

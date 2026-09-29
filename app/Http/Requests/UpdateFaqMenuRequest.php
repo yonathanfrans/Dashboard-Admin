@@ -25,7 +25,8 @@ class UpdateFaqMenuRequest extends FormRequest
         return [
             'menu' => ['required', 'string', 'max:50'],
             'sub_menu' => ['required', 'string', 'max:255'],
-            'aktif' => ['required', 'in:Y,T']
+            'aktif' => ['required', 'in:Y,T'],
+            'no_urut' => ['required', 'integer', 'min:1']
         ];
     }
 }

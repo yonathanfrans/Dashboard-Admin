@@ -98,17 +98,48 @@ class FaqMenuController extends Controller
         $oldMenu = $faqMenu->menu;
         $oldNoUrut = $faqMenu->no_urut;
 
+        // Simpan menu baru dan no_urut baru sebelum terupdate
+        $newMenu = $validated['menu'];
+        $newNoUrut = (int) $validated['no_urut'];
+
         // Jika menu berubah, update no_urut berdasarkan menu yang baru
-        DB::transaction(function () use ($faqMenu, $validated, $oldMenu, $oldNoUrut) {
-            if ($validated['menu'] !== $oldMenu) {
-                $lastNoUrut = FaqMenu::where('menu', $validated['menu'])->max('no_urut') ?? 0;
-                $validated['no_urut'] = $lastNoUrut + 1;
-    
-                // Rapihkan urutan di menu lama, geser turun (decrement) semua item di menu lama yang urutannya > no_urut lama
+        DB::transaction(function () use ($faqMenu, $validated, $oldMenu, $oldNoUrut, $newMenu, $newNoUrut) {
+            // Jika menu tidak berubah, hanya posisi no_urut yang berubah
+            if ($oldMenu === $newMenu) {
+                // Kalau no urut baru < no urut lama, geser naik (increment) no_urut
+                if ($newNoUrut < $oldNoUrut) {
+                    FaqMenu::where('menu', $oldMenu)
+                        ->where('id_sub', '!=', $faqMenu->id_sub)
+                        ->whereBetween('no_urut', [$newNoUrut, $oldNoUrut - 1])
+                        ->increment('no_urut');
+                } elseif ($newNoUrut > $oldNoUrut) {
+                    // Kalau no urut baru > no urut lama, geser turun (decrement) no_urut
+                    FaqMenu::where('menu', $oldMenu)
+                        ->where('id_sub', '!=', $faqMenu->id_sub)
+                        ->whereBetween('no_urut', [$oldNoUrut + 1, $newNoUrut])
+                        ->decrement('no_urut');
+                }
+            } else {
+                // Jika pindah menu baru, Rapihkan urutan di menu lama (geser turun semua item)
                 FaqMenu::where('menu', $oldMenu)
-                    ->where('no_urut', '>', $oldNoUrut)
+                    ->where('no_urut', '>', $newNoUrut)
                     ->decrement('no_urut');
+                
+                // geser urutan menu baru jika disisipkan di tengah
+                FaqMenu::where('menu', $newMenu)
+                    ->where('no_urut', '>=', $newNoUrut)
+                    ->increment('no_urut');
             }
+
+            // if ($validated['menu'] !== $oldMenu) {
+            //     $lastNoUrut = FaqMenu::where('menu', $validated['menu'])->max('no_urut') ?? 0;
+            //     $validated['no_urut'] = $lastNoUrut + 1;
+    
+            //     // Rapihkan urutan di menu lama, geser turun (decrement) semua item di menu lama yang urutannya > no_urut lama
+            //     FaqMenu::where('menu', $oldMenu)
+            //         ->where('no_urut', '>', $oldNoUrut)
+            //         ->decrement('no_urut');
+            // }
     
             // Update data ke db
             $faqMenu->update($validated);
