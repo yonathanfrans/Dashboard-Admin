@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Input jenis akses aplikasi dan lainnya
     const aksesApp = document.getElementById('akses_app');
     const wrapperApp = document.getElementById('wrapper-keterangan-app');
     
@@ -6,34 +7,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const wrapperLainnya = document.getElementById('wrapper-keterangan-lainnya');
 
     function toggleAksesFields() {
-        if (aksesApp.checked) {
-            wrapperApp.classList.remove('d-none');
-        } else {
-            wrapperApp.classList.add('d-none');
-        }
-
-        if (aksesLainnya.checked) {
-            wrapperLainnya.classList.remove('d-none');
-        } else {
-            wrapperLainnya.classList.add('d-none');
-        }
+        if (aksesApp && wrapperApp) wrapperApp.classList.toggle('d-none', !aksesApp.checked);
+        if (aksesLainnya && wrapperLainnya) wrapperLainnya.classList.toggle('d-none', !aksesLainnya.checked);
     }
 
-    aksesApp.addEventListener('change', toggleAksesFields);
-    aksesLainnya.addEventListener('change', toggleAksesFields);
-    toggleAksesFields();
+    if (aksesApp && aksesLainnya) {
+        aksesApp.addEventListener('change', toggleAksesFields);
+        aksesLainnya.addEventListener('change', toggleAksesFields);
+        toggleAksesFields();
+    }
 
+    // Input waktu akses untuk keterangan waktu lainnya
     const waktuAkses = document.getElementById('waktu_akses');
     const wrapperWaktu = document.getElementById('wrapper-keterangan-waktu');
 
     function toggleWaktuField() {
-        if (waktuAkses.value === 'lainnya') {
-            wrapperWaktu.classList.remove('d-none');
-        } else {
-            wrapperWaktu.classList.add('d-none');
-        }
+        if (waktuAkses && wrapperWaktu) wrapperWaktu.classList.toggle('d-none', waktuAkses.value !== 'lainnya');
     }
 
-    waktuAkses.addEventListener('change', toggleWaktuField);
-    toggleWaktuField();
+    if (waktuAkses) {
+        waktuAkses.addEventListener('change', toggleWaktuField);
+        toggleWaktuField();
+    }
 })

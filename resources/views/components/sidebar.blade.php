@@ -107,7 +107,7 @@
                 <!-- Start::slide -->
                 <li class="slide">
                     <a href="{{ route('accessRequest.index') }}" class="side-menu__item {{ request()->routeIs('accessRequest.*') ? 'active' : '' }}">
-                        <i class="fe fe-help-circle side-menu__icon"></i>
+                        <i class="ri-key-2-fill side-menu__icon"></i>
                         <span class="side-menu__label">Permohonan Hak Akses</span>
                     </a>
                 </li>

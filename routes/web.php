@@ -68,5 +68,5 @@ Route::middleware('api.auth')->group(function () {
     Route::patch('/dashboard/access-request/{accessRequest}', [AccessRequestController::class, 'update'])->name('accessRequest.update');
     // Route Delete Access Request
     Route::delete('/dashboard/access-request/{accessRequest}', [AccessRequestController::class, 'destroy'])->name('accessRequest.delete');
-
+    
 });

@@ -63,8 +63,17 @@ class AccessRequestController extends Controller
         // validasi request form
         $validated = $request->validated();
 
-        // Handle file form akses
+        // generate nomor formulir otomatis
+        if ($request->jns_permintaan === 'pendaftaran') {
+            $today = now()->format('Ymd');
+            $count = AccessRequest::whereDate('date_created', now())->count() + 1;
+            $nomorFormulir = 'REQ/' . $today . '/' . str_pad($count, 4, '0', STR_PAD_LEFT);
+            $validated['nomor_formulir'] = $nomorFormulir;
+        }
+
+        // Handle file
         $validated['url_form_akses'] = $request->file('url_form_akses')->store('formAccess_pdf', 'public');
+        $validated['url_panduan'] = $request->file('url_panduan')->store('filePanduan_pdf', 'public');
 
         // Field otomatis
         $validated['status'] = 'pending';
@@ -116,6 +125,22 @@ class AccessRequestController extends Controller
             $validated['url_form_akses'] = $accessRequest->url_form_akses;
         }
 
+        // Handle file panduan jika file diupdate
+        if ($request->hasFile('url_panduan')) {
+            // simpan path file lama
+            $oldFile = $accessRequest->url_panduan;
+
+            // simpan file baru
+            $validated['url_panduan'] = $request->file('url_panduan')->store('filePanduan_pdf', 'public');
+
+            // Hapus file lama dari storage
+            if ($oldFile && Storage::disk('public')->exists($oldFile)) {
+                Storage::disk('public')->delete($oldFile);
+            }
+        } else {
+            $validated['url_panduan'] = $accessRequest->url_panduan;
+        }
+
         // Otomatis update field aktif jika status berubah
         // $validated['aktif'] = $validated['status'] === 'approved' ? 'Y' : 'T';
 
@@ -131,16 +156,22 @@ class AccessRequestController extends Controller
     public function destroy(AccessRequest $accessRequest)
     {
         // Simpan path file lama sebelum dihapus
-        $oldFile = $accessRequest->url_form_akses;
+        $formPath = $accessRequest->url_form_akses;
+        $guidePath = $accessRequest->url_panduan;
 
         try {
             DB::transaction(function() use ($accessRequest) {
                 $accessRequest->delete();
             });
 
-            // Hapus file dari storage
-            if  ($oldFile && Storage::disk('public')->exists($oldFile)) {
-                Storage::disk('public')->delete($oldFile);
+            // Hapus file formulir dari storage
+            if  ($formPath && Storage::disk('public')->exists($formPath)) {
+                Storage::disk('public')->delete($formPath);
+            }
+
+            // Hapus file panduan dari storage
+            if  ($guidePath && Storage::disk('public')->exists($guidePath)) {
+                Storage::disk('public')->delete($guidePath);
             }
 
             return redirect()->route('accessRequest.index')->with('success', 'Permohonan hak akses berhasil dihapus!');

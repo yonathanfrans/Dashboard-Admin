@@ -6,7 +6,7 @@ use App\Services\EncryptionService;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['nama', 'unit_kerja', 'telepon', 'email', 'jns_permintaan', 'jns_akses', 'keterangan_aplikasi', 'keterangan_lainnya', 'kebutuhan_permintaan', 'sifat_akses', 'waktu_akses', 'keterangan_waktu_lainnya', 'masa_berlaku', 'setuju_ketentuan', 'status', 'aktif', 'url_form_akses', 'url_api', 'catatan_api', 'date_created', 'date_modified'])]
+#[Fillable(['nomor_formulir', 'nama', 'unit_kerja', 'telepon', 'email', 'jns_permintaan', 'jns_akses', 'keterangan_aplikasi', 'keterangan_lainnya', 'kebutuhan_permintaan', 'sifat_akses', 'waktu_akses', 'keterangan_waktu_lainnya', 'masa_berlaku', 'setuju_ketentuan', 'status', 'aktif', 'url_form_akses', 'url_api', 'catatan_api', 'url_panduan', 'date_created', 'date_modified'])]
 class AccessRequest extends Model
 {
     protected $table = 'access_request';

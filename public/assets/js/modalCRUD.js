@@ -7,6 +7,7 @@ if (editCategoryFaqModal) {
         const id = button.getAttribute("data-id");
         const menu = button.getAttribute("data-menu");
         const subMenu = button.getAttribute("data-sub-menu");
+        const noUrut = button.getAttribute("data-no-urut");
         const aktif = button.getAttribute("data-aktif");
 
         const form = editCategoryFaqModal.querySelector("#editCategoryFaqForm");
@@ -15,6 +16,7 @@ if (editCategoryFaqModal) {
 
         editCategoryFaqModal.querySelector("#update-category-faq-menu").value = menu;
         editCategoryFaqModal.querySelector("#update-category-faq-sub-menu").value = subMenu;
+        editCategoryFaqModal.querySelector("#update-category-faq-no-urut").value = noUrut;
         editCategoryFaqModal.querySelector("#update-category-faq-status").value = aktif;
     });
 }

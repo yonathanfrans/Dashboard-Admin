@@ -137,7 +137,7 @@
                                                             <span class="fe fe-edit fs-14"></span>
                                                         </a>
 
-                                                        <button 
+                                                        {{-- <button 
                                                             class="btn text-danger btn-sm" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#deleteAccessRequestModal" 
@@ -145,7 +145,7 @@
                                                             data-id="{{ $item->getRouteKey() }}" 
                                                             data-nama="{{ $item->nama }}">
                                                             <span class="fe fe-trash-2 fs-14"></span>
-                                                        </button>
+                                                        </button> --}}
                                                     </div>
                                                 </td>
                                             </tr>

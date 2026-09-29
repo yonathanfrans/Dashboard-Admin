@@ -28,7 +28,7 @@ class StoreAccessRequest extends FormRequest
             'unit_kerja' => ['required', 'string', 'max:255'],
             'telepon' => ['required', 'string', 'max:20'],
             'email' => ['required', 'email', 'max:255'],
-            'jns_permintaan' => ['required', 'in:pendaftaran,penutupan'],
+            'jns_permintaan' => ['required', 'in:pendaftaran'],
             'jns_akses' => ['required', 'array', 'min:1'],
             'jns_akses.*' => ['in:database,aplikasi,sistem_operasi,lainnya'],
             'keterangan_aplikasi' => [Rule::requiredIf(in_array('aplikasi', $this->input('jns_akses', []))), 'nullable', 'string', 'max:255'],
@@ -41,7 +41,8 @@ class StoreAccessRequest extends FormRequest
             'setuju_ketentuan' => ['accepted'],
             'url_form_akses' => ['required', 'file', 'mimes:pdf', 'max:5120'],
             'url_api' => ['required', 'string', 'max:255'],
-            'catatan_api' => ['nullable', 'string', 'max:255']
+            'catatan_api' => ['nullable', 'string', 'max:255'],
+            'url_panduan' => ['required', 'file', 'mimes:pdf', 'max:5120']
         ];
     }
 }

@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('access_request', function (Blueprint $table) {
             $table->id();
+
+            $table->string('nomor_formulir')->unique();
             
             $table->string('nama');
             $table->string('unit_kerja');
             $table->string('telepon', 20);
             $table->string('email');
 
-            $table->enum('jns_permintaan', ['pendaftaran', 'penutupan']);
+            $table->enum('jns_permintaan', ['pendaftaran', 'penutupan'])->default('pendaftaran');
             $table->json('jns_akses');
             $table->string('keterangan_aplikasi')->nullable();
             $table->string('keterangan_lainnya')->nullable();
@@ -38,6 +40,7 @@ return new class extends Migration
             $table->string('url_form_akses', 255);
             $table->string('url_api', 255);
             $table->string('catatan_api')->nullable();
+            $table->string('url_panduan', 255);
             
             $table->dateTime('date_created');
             $table->dateTime('date_modified')->nullable();
