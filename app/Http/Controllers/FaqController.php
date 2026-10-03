@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Helpers\Hashid;
 use App\Http\Requests\StoreFaqRequest;
 use App\Http\Requests\UpdateFaqRequest;
@@ -99,6 +100,9 @@ class FaqController extends Controller
         // Simpan ke db
         Faq::create($validated);
 
+        // Catat log create
+        ActivityLogger::log('Menambahkan FAQ baru: ' . $validated['pertanyaan']);
+
         return redirect()->route('faq.index')->with('success', 'FAQ berhasil ditambahkan!');
     }
 
@@ -161,6 +165,9 @@ class FaqController extends Controller
         // Update data FAQ
         $faq->update($validated);
 
+        // Catat log update
+        ActivityLogger::log('Memperbarui FAQ: ' . $validated['pertanyaan']);
+
         return redirect()->route('faq.index')->with('success', 'FAQ berhasil diperbarui!');
     }
 
@@ -176,6 +183,9 @@ class FaqController extends Controller
             DB::transaction(function() use ($faq) {
                 $faq->delete();
             });
+
+            // Catat log delete
+            ActivityLogger::log('Menghapus FAQ: ' . $faq->pertanyaan);
 
             // Hapus file dari storage
             if ($oldFile && Storage::disk('public')->exists($oldFile)) {

@@ -115,6 +115,21 @@
 
                 <!-- Start::slide__category -->
                 <li class="slide__category">
+                    <span class="category-name">log</span>
+                </li>
+                <!-- End::slide__category -->
+
+                <!-- Start::slide -->
+                <li class="slide">
+                    <a href="{{ route('activityLog.index') }}" class="side-menu__item {{ request()->routeIs('activityLog.*') ? 'active' : '' }}">
+                        <i class="bi bi-person-workspace side-menu__icon"></i>
+                        <span class="side-menu__label">Activity Log</span>
+                    </a>
+                </li>
+                <!-- End::slide -->
+
+                <!-- Start::slide__category -->
+                <li class="slide__category">
                     <span class="category-name">Izin Kapal</span>
                 </li>
                 <!-- End::slide__category -->

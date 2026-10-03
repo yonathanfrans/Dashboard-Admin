@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
@@ -98,6 +99,9 @@ class NewsController extends Controller
         // Simpan ke db
         News::create($validated);
 
+        // Catat log create
+        ActivityLogger::log('Menambahkan berita baru: ' . $validated['heading']);
+
         return redirect()->route('news.index')->with('success', 'Berita berhasil ditambahkan!');
     }
 
@@ -184,15 +188,11 @@ class NewsController extends Controller
             $validated['show_since'] = null; // tetap menggunakan show_since lama
         }
 
-        // otomatis update date_news jika publish berubah
-        // if ($news->publish === 'T' && $validated['publish'] === 'Y') {
-        //     $validated['date_news'] = now()->toDateString();
-        // } elseif ($news->publish === 'Y' && $validated['publish'] === 'T') {
-        //     $validated['date_news'] = $news->entry_date->toDateString();
-        // }
-
         // Update data berita
         $news->update($validated);
+
+        // Catat log update
+        ActivityLogger::log('Memperbarui berita: ' . $validated['heading']);
 
         return redirect()->route('news.index')->with('success', 'Berita berhasil diperbarui!');
     }
@@ -210,6 +210,9 @@ class NewsController extends Controller
             DB::transaction(function () use ($news) {
                 $news->delete();
             });
+
+            // Catat log delete
+            ActivityLogger::log('Menghapus berita: ' . $news->heading);
 
             // Hapus thumbnail dari storage
             if ($thumbnailPath && Storage::disk('public')->exists($thumbnailPath)) {

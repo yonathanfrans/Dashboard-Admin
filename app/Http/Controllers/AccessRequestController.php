@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Http\Requests\StoreAccessRequest;
 use App\Http\Requests\UpdateAccessRequest;
 use App\Models\AccessRequest;
@@ -97,6 +98,9 @@ class AccessRequestController extends Controller
         // Simpan ke db
         AccessRequest::create($validated);
 
+        // Catat log create
+        ActivityLogger::log('Menambahkan permohonan hak akses baru: ' . $validated['nama']);
+
         return redirect()->route('accessRequest.index')->with('success', 'Permohonan hak akses berhasil ditambahkan!');
     }
 
@@ -162,6 +166,9 @@ class AccessRequestController extends Controller
         // Update data permohonan hak akses
         $accessRequest->update($validated);
 
+        // Catat log update
+        ActivityLogger::log('Memperbarui permohonan hak akses: ' . $validated['nama']);
+
         return redirect()->route('accessRequest.index')->with('success', 'Permohonan hak akses berhasil diperbarui!');
     }
 
@@ -178,6 +185,9 @@ class AccessRequestController extends Controller
             DB::transaction(function() use ($accessRequest) {
                 $accessRequest->delete();
             });
+
+            // Catat log delete
+            ActivityLogger::log('Menghapus permohonan hak akses: ' . $accessRequest->nama);
 
             // Hapus file formulir dari storage
             if  ($formPath && Storage::disk('public')->exists($formPath)) {

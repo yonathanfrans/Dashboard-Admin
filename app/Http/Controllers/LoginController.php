@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Services\LoginApiService;
 use Illuminate\Http\Request;
 
@@ -25,10 +26,17 @@ class LoginController extends Controller
             if (isset($response['status']) && $response['status'] === 200 && !empty($response['response_data'])) {
                 $request->session()->regenerate();
 
+                $userData = $response['response_data'];
+
                 session([
-                    'login_token' => $response['response_data'],
+                    'login_token' => $userData,
                     'username' => $credentials['username'],
+                    'nama_user' => $userData['nama_user'],
+                    'email' => $credentials['username']
                 ]);
+
+                // Catat log login
+                ActivityLogger::log('Login ke dashboard');
 
                 return redirect()->intended('dashboard');
             }
@@ -43,6 +51,9 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        // Catat log logout
+        ActivityLogger::log('Logout dari dashboard');
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

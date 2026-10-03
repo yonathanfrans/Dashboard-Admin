@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Http\Requests\StoreFaqMenuRequest;
 use App\Http\Requests\UpdateFaqMenuRequest;
 use App\Models\FaqMenu;
@@ -68,6 +69,9 @@ class FaqMenuController extends Controller
         // Simpan data ke db
         FaqMenu::create($validated);
 
+        // Catat log create
+        ActivityLogger::log('Menambahkan kategori FAQ baru: ' . $validated['menu'] . ' - ' . $validated['sub_menu']);
+
         return redirect()->back()->with('success', 'Kategori FAQ berhasil ditambahkan!');
     }
 
@@ -130,19 +134,13 @@ class FaqMenuController extends Controller
                     ->where('no_urut', '>=', $newNoUrut)
                     ->increment('no_urut');
             }
-
-            // if ($validated['menu'] !== $oldMenu) {
-            //     $lastNoUrut = FaqMenu::where('menu', $validated['menu'])->max('no_urut') ?? 0;
-            //     $validated['no_urut'] = $lastNoUrut + 1;
-    
-            //     // Rapihkan urutan di menu lama, geser turun (decrement) semua item di menu lama yang urutannya > no_urut lama
-            //     FaqMenu::where('menu', $oldMenu)
-            //         ->where('no_urut', '>', $oldNoUrut)
-            //         ->decrement('no_urut');
-            // }
     
             // Update data ke db
             $faqMenu->update($validated);
+
+            // Catat log update
+            ActivityLogger::log('Memperbarui kategori FAQ: ' . $validated['menu'] . ' - ' . $validated['sub_menu']);
+
         });
 
         return redirect()->back()->with('success', 'Kategori FAQ berhasil diperbarui!');
@@ -171,6 +169,9 @@ class FaqMenuController extends Controller
                     ->where('no_urut', '>', $noUrut)
                     ->decrement('no_urut');
             });
+
+            // Catat log delete
+            ActivityLogger::log('Menghapus kategori FAQ: ' . $faqMenu->menu . ' - ' . $faqMenu->sub_menu);
     
             return redirect()->back()->with('success', 'Kategori FAQ berhasil dihapus!');
 

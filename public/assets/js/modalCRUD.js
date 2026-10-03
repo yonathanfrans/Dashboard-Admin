@@ -47,7 +47,7 @@ if (deleteFaqModal) {
         const pertanyaan = button.getAttribute("data-pertanyaan");
 
         const form = deleteFaqModal.querySelector("#deleteFaqForm");
-        form.action = `/dashboard/faq/${id}`;
+        form.action = `/dashboard/faqs/${id}`;
 
         deleteFaqModal.querySelector(
             "#delete-faq",
@@ -79,7 +79,7 @@ if (deleteAccessRequestModal) {
         const nama = button.getAttribute("data-nama");
 
         const form = deleteAccessRequestModal.querySelector("#deleteAccessRequestForm");
-        form.action = `/dashboard/access-request/${id}`;
+        form.action = `/dashboard/access-requests/${id}`;
 
         deleteAccessRequestModal.querySelector(
             "#delete-access-request",

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccessRequestController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FaqMenuController;
@@ -48,25 +49,28 @@ Route::middleware('api.auth')->group(function () {
     Route::delete('/dashboard/faq-menus/{faqMenu}', [FaqMenuController::class, 'destroy'])->name('faqMenu.delete');
 
     // Route Index FAQ
-    Route::get('/dashboard/faq', [FaqController::class, 'index'])->name('faq.index');
+    Route::get('/dashboard/faqs', [FaqController::class, 'index'])->name('faq.index');
     // Route Create FAQ
-    Route::get('/dashboard/faq/create', [FaqController::class, 'create'])->name('faq.create');
-    Route::post('/dashboard/faq', [FaqController::class, 'store'])->name('faq.store');
+    Route::get('/dashboard/faqs/create', [FaqController::class, 'create'])->name('faq.create');
+    Route::post('/dashboard/faqs', [FaqController::class, 'store'])->name('faq.store');
     // Route Update FAQ
-    Route::get('/dashboard/faq/{faq}/edit', [FaqController::class, 'edit'])->name('faq.edit');
-    Route::patch('/dashboard/faq/{faq}', [FaqController::class, 'update'])->name('faq.update');
+    Route::get('/dashboard/faqs/{faq}/edit', [FaqController::class, 'edit'])->name('faq.edit');
+    Route::patch('/dashboard/faqs/{faq}', [FaqController::class, 'update'])->name('faq.update');
     // Route Delete FAQ
-    Route::delete('/dashboard/faq/{faq}', [FaqController::class, 'destroy'])->name('faq.delete');
+    Route::delete('/dashboard/faqs/{faq}', [FaqController::class, 'destroy'])->name('faq.delete');
 
     // Route Index Access Request
-    Route::get('/dashboard/access-request', [AccessRequestController::class, 'index'])->name('accessRequest.index');
+    Route::get('/dashboard/access-requests', [AccessRequestController::class, 'index'])->name('accessRequest.index');
     // Route Create Access Request
-    Route::get('/dashboard/access-request/create', [AccessRequestController::class, 'create'])->name('accessRequest.create');
-    Route::post('/dashboard/access-request', [AccessRequestController::class, 'store'])->name('accessRequest.store');
+    Route::get('/dashboard/access-requests/create', [AccessRequestController::class, 'create'])->name('accessRequest.create');
+    Route::post('/dashboard/access-requests', [AccessRequestController::class, 'store'])->name('accessRequest.store');
     // Route Update Access Request
-    Route::get('/dashboard/access-request/{accessRequest}/edit', [AccessRequestController::class, 'edit'])->name('accessRequest.edit');
-    Route::patch('/dashboard/access-request/{accessRequest}', [AccessRequestController::class, 'update'])->name('accessRequest.update');
+    Route::get('/dashboard/access-requests/{accessRequest}/edit', [AccessRequestController::class, 'edit'])->name('accessRequest.edit');
+    Route::patch('/dashboard/access-requests/{accessRequest}', [AccessRequestController::class, 'update'])->name('accessRequest.update');
     // Route Delete Access Request
-    Route::delete('/dashboard/access-request/{accessRequest}', [AccessRequestController::class, 'destroy'])->name('accessRequest.delete');
+    Route::delete('/dashboard/access-requests/{accessRequest}', [AccessRequestController::class, 'destroy'])->name('accessRequest.delete');
+
+    // Route Index Activity Log
+    Route::get('/dashboard/activity-logs', [ActivityLogController::class, 'index'])->name('activityLog.index');
     
 });
