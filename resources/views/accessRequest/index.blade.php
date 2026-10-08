@@ -163,7 +163,7 @@
 
                         <!-- Pagination -->
                         <div class="row mt-3">
-                            @if ($accessRequests->total() < 11) 
+                            @if (!$accessRequests->hasPages()) 
                             <div class="col-sm-12 col-md-6 my-auto">
                                 <span>Showing {{ $accessRequests->firstItem() ?? 0 }} to {{ $accessRequests->lastItem() ?? 0 }} of {{ $accessRequests->total() }} entries</span>
                             </div>

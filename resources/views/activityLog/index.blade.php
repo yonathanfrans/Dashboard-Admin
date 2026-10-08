@@ -119,7 +119,7 @@
 
                         <!-- Pagination -->
                         <div class="row mt-3">
-                            @if ($activityLogs->total() < 11) 
+                            @if (!$activityLogs->hasPages()) 
                             <div class="col-sm-12 col-md-6 my-auto">
                                 <span>Showing {{ $activityLogs->firstItem() ?? 0 }} to {{ $activityLogs->lastItem() ?? 0 }} of {{ $activityLogs->total() }} entries</span>
                             </div>

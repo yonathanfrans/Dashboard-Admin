@@ -131,7 +131,7 @@
 
                         <!-- Pagination -->
                         <div class="row mt-3">
-                            @if ($news->total() < 11) 
+                            @if (!$news->hasPages()) 
                             <div class="col-sm-12 col-md-6 my-auto">
                                 <span>Showing {{ $news->firstItem() ?? 0 }} to {{ $news->lastItem() ?? 0 }} of {{ $news->total() }} entries</span>
                             </div>
