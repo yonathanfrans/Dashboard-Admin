@@ -5,7 +5,7 @@
 @section('content')
 
 <!-- Start::app-content -->
-<div class="main-content app-content">
+<div class="main-content app-content mt-4">
     <div class="container-fluid">
         @include('components.page-header', [
             'title' => 'Permohonan Hak Akses',

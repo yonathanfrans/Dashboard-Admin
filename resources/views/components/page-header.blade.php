@@ -1,5 +1,5 @@
 <!-- PAGE-HEADER -->
-<div class="page-header">
+<div class="page-header bg-white py-2 px-4 rounded-3">
     <h1 class="page-title my-auto">{{ $title }}</h1>
     <div>
         <ol class="breadcrumb mb-0">

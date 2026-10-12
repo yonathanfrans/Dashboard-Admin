@@ -13,7 +13,7 @@
 <!-- Start::app-content -->
 <div class="main-content app-content">
     <div class="container-fluid">
-        @include('components.page-header', [ 'title' => 'Create FAQ',
+        @include('components.page-header', [ 'title' => 'Buat FAQ',
         'breadcrumbs' => [ [ 'title' => 'Dashboard', 'route' => 'dashboard' ], [
         'title' => 'FAQ', 'route' => 'faq.index' ] ] ])
 

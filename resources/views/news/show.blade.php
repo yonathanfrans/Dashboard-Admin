@@ -7,9 +7,9 @@
 <!-- Start::app-content -->
 <div class="main-content app-content">
     <div class="container">
-        @include('components.page-header', [ 'title' => 'View News',
+        @include('components.page-header', [ 'title' => 'View Berita',
         'breadcrumbs' => [ [ 'title' => 'Dashboard', 'route' => 'dashboard' ], [
-        'title' => 'News', 'route' => 'news.index' ] ] ])
+        'title' => 'Berita', 'route' => 'news.index' ] ] ])
 
         <!-- ROW-1 OPEN-->
         <div class="row">

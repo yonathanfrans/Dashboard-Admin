@@ -13,9 +13,9 @@
 <!-- Start::app-content -->
 <div class="main-content app-content">
     <div class="container-fluid">
-        @include('components.page-header', [ 'title' => 'Create News',
+        @include('components.page-header', [ 'title' => 'Buat Berita',
         'breadcrumbs' => [ [ 'title' => 'Dashboard', 'route' => 'dashboard' ], [
-        'title' => 'News', 'route' => 'news.index' ] ] ])
+        'title' => 'Berita', 'route' => 'news.index' ] ] ])
 
         <!-- ROW-1 -->
         <div class="row">
