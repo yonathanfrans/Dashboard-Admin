@@ -7,6 +7,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FaqMenuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\TrackingSiupController;
 use Illuminate\Support\Facades\Route;
 
 // Route Guest
@@ -72,5 +73,8 @@ Route::middleware('api.auth')->group(function () {
 
     // Route Index Activity Log
     Route::get('/dashboard/activity-logs', [ActivityLogController::class, 'index'])->name('activityLog.index');
+
+    // Route index Tracking SIUP
+    Route::get('/dashboard/tracking-permohonan', [TrackingSiupController::class, 'index'])->name('trackingSiup.index');
     
 });

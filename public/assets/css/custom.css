@@ -49,3 +49,33 @@
 .show-thumbnail {
     min-height: 200px;
 }
+
+.row-tracking {
+    cursor: pointer;
+}
+
+.timeline-progress {
+  border-left: 1px solid rgb(108, 95, 252);
+  position: relative;
+  list-style: none;
+  padding-left: 1rem;
+  margin-left: 1.7rem;
+  margin-top: 1rem;
+  gap: 3rem;
+}
+
+.timeline-progress .timeline-item {
+  position: relative;
+}
+
+.timeline-progress .timeline-item:after {
+  position: absolute;
+  display: block;
+  top: 0;
+  background-color: rgb(108, 95, 252);
+  left: -21.5px; /* Menyesuaikan posisi titik bulatan pada garis */
+  border-radius: 50%;
+  height: 11px;
+  width: 11px;
+  content: "";
+}

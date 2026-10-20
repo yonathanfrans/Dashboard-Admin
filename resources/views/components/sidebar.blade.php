@@ -128,7 +128,7 @@
                 </li>
                 <!-- End::slide -->
 
-                <!-- Start::slide__category -->
+                {{-- <!-- Start::slide__category -->
                 <li class="slide__category">
                     <span class="category-name">Izin Kapal</span>
                 </li>
@@ -147,7 +147,7 @@
                         <span class="side-menu__label">Pencabutan SIPI / SIKPI</span>
                     </a>
                 </li>
-                <!-- End::slide -->
+                <!-- End::slide --> --}}
 
                 <!-- Start::slide__category -->
                 <li class="slide__category">
@@ -157,17 +157,17 @@
 
                 <!-- Start::slide -->
                 <li class="slide">
-                    <a href="#" class="side-menu__item">
-                        <i class="fe fe-file-text side-menu__icon"></i>
-                        <span class="side-menu__label">SIUP Aktif</span>
+                    <a href="{{ route('trackingSiup.index') }}" class="side-menu__item {{ request()->routeIs('trackingSiup.*') ? 'active' : '' }}">
+                        <i class="ri-file-search-line side-menu__icon"></i>
+                        <span class="side-menu__label">Tracking Permohonan</span>
                     </a>
                 </li>
-                <li class="slide">
+                {{-- <li class="slide">
                     <a href="#" class="side-menu__item">
                         <i class="fe fe-file-text side-menu__icon"></i>
                         <span class="side-menu__label">Pencabutan SIUP</span>
                     </a>
-                </li>
+                </li> --}}
                 <!-- End::slide -->
 
                 <hr />
