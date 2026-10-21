@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                     <a href="{{ route('news.index') }}" class="btn btn-light me-2">Kembali</a>
-                                    <a href="{{ route('news.edit', $news->slug) }}" class="btn btn-primary">Edit Berita</a>
+                                    <a href="{{ route('news.edit', $news->getRouteKey()) }}" class="btn btn-primary">Edit Berita</a>
                                 </div>
                             </div>
                         </div>

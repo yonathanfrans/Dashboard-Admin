@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
@@ -59,18 +58,6 @@ class NewsController extends Controller
     {
         // Validasi request form
         $validated = $request->validated();
-
-        // generate slug
-        $baseSlug = Str::slug($validated['heading']);
-        $slug = $baseSlug;
-        $count = 1;
-
-        // Jika request slug == db slug
-        while (News::where('slug', $slug)->exists()) {
-            $slug = "{$baseSlug}-{$count}";
-            $count++;
-        }
-        $validated['slug'] = $slug;
 
         // Store thumbnail ke folder
         $validated['thumbnail_image'] = $request->file('thumbnail_image')->store('news/thumbnails', 'public');
@@ -128,20 +115,6 @@ class NewsController extends Controller
     {
         // Validasi request form 
         $validated = $request->validated();
-
-        // Update slug jika title berubah
-        if ($validated['heading'] !== $news->heading) {
-            $baseSlug = Str::slug($validated['heading']);
-            $slug = $baseSlug;
-            $count = 1;
-
-            // Cek slug ke db, abaikan id berita agar tidak bentrok
-            while (News::where('slug', $slug)->where('id', '!=', $news->id)->exists()) {
-                $slug = "{$baseSlug}-{$count}";
-                $count++;
-            }
-            $validated['slug'] = $slug;
-        }
 
         // Jika ada upload file thumbnail image
         if ($request->hasFile('thumbnail_image')) {

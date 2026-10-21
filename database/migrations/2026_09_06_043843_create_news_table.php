@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->timestamp('entry_date')->nullable()->useCurrent();
             $table->string('heading', 255);
-            $table->string('slug', 255)->unique();
             $table->date('date_news');
             $table->string('jns_file', 20)->nullable();
             $table->enum('flag_kegiatan', ['Y', 'T'])->default('T');
