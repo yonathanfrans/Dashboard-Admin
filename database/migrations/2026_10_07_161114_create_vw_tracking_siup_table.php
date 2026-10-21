@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('vw_tracking_siup', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('id_permohonan_izin')->index();
+            $table->unsignedBigInteger('id_permohonan_izin')->primary();
             $table->string('status_permohonan')->default('PROSES');
             $table->integer('id_status_izin');
             $table->string('nomor_agenda')->index();            

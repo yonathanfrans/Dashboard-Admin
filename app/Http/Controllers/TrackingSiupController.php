@@ -23,14 +23,6 @@ class TrackingSiupController extends Controller
                             ->orWhere('nomor_izin', 'like', "%{$search}%");
                     });
                 })
-                // Filter status izin
-                // ->when($request->filled('nama_status_izin'), function ($query) use ($request) {
-                //     $query->where('nama_status_izin', $request->nama_status_izin);
-                // })
-                // Filter status terbit
-                // ->when($request->filled('status_terbit'), function ($query) use ($request) {
-                //     $query->where('status_terbit', $request->status_terbit);
-                // })
                 ->latest('tanggal_permohonan')
                 ->paginate(10)
                 ->withQueryString();

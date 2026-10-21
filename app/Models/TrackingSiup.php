@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Services\EncryptionService;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +12,9 @@ class TrackingSiup extends Model
     use HasFactory;
 
     protected $table = 'vw_tracking_siup';
+    protected $primaryKey = 'id_permohonan_izin';
 
+    public $incrementing = false;
     public $timestamps = false;
 
     protected function casts(): array
