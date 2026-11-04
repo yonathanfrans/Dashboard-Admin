@@ -135,6 +135,7 @@
                 </div>
             </div>
         </div>
+    </div>
     
     {{-- Start Modal View --}}
     <div 

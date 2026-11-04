@@ -147,6 +147,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Start Modal Delete --}}
     <div class="modal fade" id="deleteNewsModal" tabindex="-1" aria-labelledby="deleteNewsModalLabel" data-bs-keyboard="false" aria-hidden="true">
