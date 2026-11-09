@@ -170,6 +170,21 @@
                 </li> --}}
                 <!-- End::slide -->
 
+                <!-- Start::slide__category -->
+                <li class="slide__category">
+                    <span class="category-name">Master Data</span>
+                </li>
+                <!-- End::slide__category -->
+
+                <!-- Start::slide -->
+                <li class="slide">
+                    <a href="{{ route('subAlatTangkap.index') }}" class="side-menu__item {{ request()->routeIs('subAlatTangkap.*') ? 'active' : '' }}">
+                        <i class="bi bi-folder side-menu__icon"></i>
+                        <span class="side-menu__label">Master Data Referensi</span>
+                    </a>
+                </li>
+                <!-- End::slide -->
+
                 <hr />
                 <!-- Start::slide -->
                 <li class="slide">

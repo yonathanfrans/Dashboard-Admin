@@ -7,6 +7,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FaqMenuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\SubAlatTangkapController;
 use App\Http\Controllers\TrackingSiupController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,5 +77,8 @@ Route::middleware('api.auth')->group(function () {
 
     // Route index Tracking SIUP
     Route::get('/dashboard/tracking-permohonan', [TrackingSiupController::class, 'index'])->name('trackingSiup.index');
+
+    // Route index Master Data Referensi
+    Route::get('/dashboard/master-data-referensi', [SubAlatTangkapController::class, 'index'])->name('subAlatTangkap.index');
     
 });

@@ -182,3 +182,170 @@ if (viewProgressSiupModal) {
         }
     });
 }
+
+// Handling Modal view detail sub alat tangkap
+const viewSubAlatTangkapModal = document.getElementById("viewSubAlatTangkapModal");
+if (viewSubAlatTangkapModal) {
+    viewSubAlatTangkapModal.addEventListener("show.bs.modal", function (event) {
+        const button = event.relatedTarget;
+
+        // Helper function untuk membersihkan nilai '-' menjadi kosong jika digabung
+        const val = (attr) => {
+            const v = button.getAttribute(attr);
+            return (!v || v === 'null' || v === '-') ? '' : v;
+        };
+
+        const getAttr = (attr) => button.getAttribute(attr) ?? '-';
+
+        // Ambil data penting
+        const kode = getAttr("data-kode");
+        const keterangan = getAttr("data-keterangan");
+        const namaEpit = getAttr("data-nama-epit");
+        const kelompokApiIzin = getAttr("data-kelompok-api-izin");
+        const nmEn = getAttr("data-nm-en");
+        const pnbp = getAttr("data-pnbp");
+        const kelompokAkt = getAttr("data-kelompok-akt");
+        const koefisien = getAttr("data-koefisien");
+        const palkah = getAttr("data-palkah");
+        const kuota = getAttr("data-kuota");
+        const harga = getAttr("data-harga");
+        const statusPengangkut = getAttr("data-status-pengangkut");
+        const statusRumpon = getAttr("data-status-rumpon");
+        const statusArmada = getAttr("data-status-armada");
+        const aktif = getAttr("data-aktif");
+        const kodeKbli = getAttr("data-kbli");
+        const grupSilat = getAttr("data-grup-silat");
+        const keteranganGroup = getAttr("data-keterangan-group");
+        const jumlahHariMelaut = getAttr("data-jumlah-hari-melaut");
+        const pascaProduksi = getAttr("data-pasca-produksi");
+        const alatTangkapSama = getAttr("data-alat-tangkap-sama");
+        const alatTangkapAlias = getAttr("data-alat-tangkap-alias");
+        const display = getAttr("data-display");
+        const statusSatuKesatuanUsaha = getAttr("data-status-satu-kesatuan-usaha");
+        const groupApi = getAttr("data-group-api");
+        const kelompokApi = getAttr("data-kelompok-api");
+        const validasiUkuranKapal = getAttr("data-validasi-ukuran-kapal");
+        const listJenisIzin = getAttr("data-list-jenis-izin");
+        const periodeIzin = getAttr("data-periode-izin");
+        
+        // ID fields
+        const idSubAlatTangkap = getAttr("data-id-sub-alat-tangkap");
+        const idSubAlatTangkapLama = getAttr("data-id-sub-alat-tangkap-lama");
+        const idSubAlatTangkapBaru = getAttr("data-id-sub-alat-tangkap-baru");
+        const idAlatTangkap = getAttr("data-id-alat-tangkap");
+        const idFishingGear = getAttr("data-id-fishing-gear");
+        const idJenisIzin = getAttr("data-id-jenis-izin");
+        const idAlatTangkapPusdatin = getAttr("data-id-alat-tangkap-pusdatin");
+        const idSubAlatTangkapMigrasi = getAttr("data-id-sub-alat-tangkap-migrasi");
+        const idPenggunaBuat = getAttr("data-id-pengguna-buat");
+        const tanggalBuat = getAttr("data-tanggal-buat");
+        const idPenggunaUbah = getAttr("data-id-pengguna-ubah");
+        const tanggalUbah = getAttr("data-tanggal-ubah");
+        const idPenggunaHapus = getAttr("data-id-pengguna-hapus");
+        const tanggalHapus = getAttr("data-tanggal-hapus");
+        const id2000 = getAttr("data-id2000");
+
+        // Set Text Data ke Elemen Modal
+        viewSubAlatTangkapModal.querySelector("#detail-kode").textContent = kode;
+        viewSubAlatTangkapModal.querySelector("#detail-keterangan").textContent = keterangan;
+        viewSubAlatTangkapModal.querySelector("#detail-nama-epit").textContent = namaEpit;
+        
+        // Penggabungan aman untuk Kelompok API
+        const formatKelompokApi = [kelompokApi, kelompokApiIzin].filter(Boolean).join(' / ');
+        viewSubAlatTangkapModal.querySelector("#detail-kelompok-api-izin").textContent = formatKelompokApi || '-';
+
+        viewSubAlatTangkapModal.querySelector("#detail-nm-en").textContent = nmEn;
+        viewSubAlatTangkapModal.querySelector("#detail-pnbp").textContent = pnbp;
+        viewSubAlatTangkapModal.querySelector("#detail-kelompok-akt").textContent = kelompokAkt;
+        viewSubAlatTangkapModal.querySelector("#detail-koefisien").textContent = koefisien;
+        viewSubAlatTangkapModal.querySelector("#detail-palkah").textContent = palkah;
+        viewSubAlatTangkapModal.querySelector("#detail-kuota").textContent = kuota;
+        viewSubAlatTangkapModal.querySelector("#detail-harga").textContent = harga;
+        viewSubAlatTangkapModal.querySelector("#detail-status-armada").textContent = statusArmada;
+
+        // Penggabungan aman untuk Grup API SILAT
+        const formatGrupSilat = [groupApi, grupSilat].filter(Boolean).join(' / ');
+        viewSubAlatTangkapModal.querySelector("#detail-grup-api-silat").textContent = formatGrupSilat || '-';
+
+        viewSubAlatTangkapModal.querySelector("#detail-kode-kbli").textContent = kodeKbli;
+        viewSubAlatTangkapModal.querySelector("#detail-keterangan-group").textContent = keteranganGroup;
+        viewSubAlatTangkapModal.querySelector("#detail-jumlah-hari-melaut").textContent = jumlahHariMelaut !== '-' ? `${jumlahHariMelaut} hari` : '-';
+        viewSubAlatTangkapModal.querySelector("#detail-alat-tangkap-sama").textContent = alatTangkapSama;
+        viewSubAlatTangkapModal.querySelector("#detail-alat-tangkap-alias").textContent = alatTangkapAlias; 
+        viewSubAlatTangkapModal.querySelector("#detail-display").textContent = display;
+        viewSubAlatTangkapModal.querySelector("#detail-validasi-ukuran-kapal").textContent = validasiUkuranKapal;
+        viewSubAlatTangkapModal.querySelector("#detail-list-jenis-izin").textContent = listJenisIzin;
+        viewSubAlatTangkapModal.querySelector("#detail-periode-izin").textContent = periodeIzin !== '-' ? `${periodeIzin} hari` : '-';
+        
+        viewSubAlatTangkapModal.querySelector("#detail-id-sub-alat-tangkap").textContent = idSubAlatTangkap;
+        viewSubAlatTangkapModal.querySelector("#detail-id-sub-alat-tangkap-lama").textContent = idSubAlatTangkapLama;
+        viewSubAlatTangkapModal.querySelector("#detail-id-sub-alat-tangkap-baru").textContent = idSubAlatTangkapBaru;
+        viewSubAlatTangkapModal.querySelector("#detail-id-alat-tangkap").textContent = idAlatTangkap;
+        viewSubAlatTangkapModal.querySelector("#detail-id-fishing-gear").textContent = idFishingGear;
+        viewSubAlatTangkapModal.querySelector("#detail-id-alat-tangkap-pusdatin").textContent = idAlatTangkapPusdatin;
+        viewSubAlatTangkapModal.querySelector("#detail-id-jenis-izin").textContent = idJenisIzin;
+        viewSubAlatTangkapModal.querySelector("#detail-id-sub-alat-tangkap-migrasi").textContent = idSubAlatTangkapMigrasi;
+        viewSubAlatTangkapModal.querySelector("#detail-id-pengguna-buat").textContent = idPenggunaBuat;
+        viewSubAlatTangkapModal.querySelector("#detail-tanggal-buat").textContent = tanggalBuat;
+        viewSubAlatTangkapModal.querySelector("#detail-id-pengguna-ubah").textContent = idPenggunaUbah;
+        viewSubAlatTangkapModal.querySelector("#detail-tanggal-ubah").textContent = tanggalUbah;
+        viewSubAlatTangkapModal.querySelector("#detail-id-pengguna-hapus").textContent = idPenggunaHapus;
+        viewSubAlatTangkapModal.querySelector("#detail-tanggal-hapus").textContent = tanggalHapus;
+        viewSubAlatTangkapModal.querySelector("#detail-id-2000").textContent = id2000;
+
+        // Styling Badge Aktif
+        const badgeAktif = viewSubAlatTangkapModal.querySelector("#detail-aktif");
+        badgeAktif.textContent = aktif;
+        if (aktif === 'YA') {
+            badgeAktif.className = 'badge bg-success';
+        } else if (aktif === 'TIDAK') {
+            badgeAktif.className = 'badge bg-danger';
+        } else {
+            badgeAktif.className = '';
+        }
+
+        // Styling Badge Pengangkut
+        const badgePengangkut = viewSubAlatTangkapModal.querySelector("#detail-status-pengangkut");
+        badgePengangkut.textContent = statusPengangkut;
+        if (statusPengangkut === 'YA') {
+            badgePengangkut.className = 'badge bg-info';
+        } else if (statusPengangkut === 'TIDAK') {
+            badgePengangkut.className = 'badge bg-danger';
+        } else {
+            badgePengangkut.className = '';
+        }
+
+        // Styling Badge Rumpon
+        const badgeRumpon = viewSubAlatTangkapModal.querySelector("#detail-status-rumpon");
+        badgeRumpon.textContent = statusRumpon;
+        if (statusRumpon === 'YA') {
+            badgeRumpon.className = 'badge bg-warning';
+        } else if (statusRumpon === 'TIDAK') {
+            badgeRumpon.className = 'badge bg-danger';
+        } else {
+            badgeRumpon.className = '';
+        }
+
+        // Styling Badge Pasca Produksi
+        const badgePascaProduksi = viewSubAlatTangkapModal.querySelector("#detail-pasca-produksi");
+        badgePascaProduksi.textContent = pascaProduksi;
+        if (pascaProduksi === 'YA') {
+            badgePascaProduksi.className = 'badge bg-primary';
+        } else if (pascaProduksi === 'TIDAK') {
+            badgePascaProduksi.className = 'badge bg-danger';
+        } else {
+            badgePascaProduksi.className = '';
+        }
+
+        // Styling Badge Satu Kesatuan Usaha
+        const badgeSatuKesatuanUsaha = viewSubAlatTangkapModal.querySelector("#detail-status-satu-kesatuan-usaha");
+        badgeSatuKesatuanUsaha.textContent = statusSatuKesatuanUsaha;
+        if (statusSatuKesatuanUsaha === 'YA') {
+            badgeSatuKesatuanUsaha.className = 'badge bg-info';
+        } else if (statusSatuKesatuanUsaha === 'TIDAK') {
+            badgeSatuKesatuanUsaha.className = 'badge bg-danger';
+        } else {
+            badgeSatuKesatuanUsaha.className = '';
+        }
+    });
+}
