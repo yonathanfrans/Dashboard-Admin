@@ -8,7 +8,7 @@
 <div class="main-content app-content mt-7">
     <div class="container-fluid">
         @include('components.page-header', [
-            'title' => 'Master Data Referensi',
+            'title' => 'Sub Alat Tangkap',
             'breadcrumbs' => [
                 [
                     'title' => 'Dashboard',
@@ -50,6 +50,7 @@
                                 {{-- Filter kelompok alat tangkap --}}
                                 <select name="kelompok_alat_tangkap" class="form-select" aria-label="Select kelompok alat tangkap" onchange="this.form.submit()">
                                     <option selected disabled>Pilih Kel. Alat Tangkap</option>
+                                    <option value="">Semua Kelompok</option>
                                     <option value="KAPAL TANGKAP" {{ request('kelompok_alat_tangkap') == 'KAPAL TANGKAP' ? 'selected' : '' }}>KAPAL TANGKAP</option>
                                     <option value="KAPAL ANGKUT PORT TO PORT" {{ request('kelompok_alat_tangkap') == 'KAPAL ANGKUT PORT TO PORT' ? 'selected' : '' }}>KAPAL ANGKUT PORT TO PORT</option>
                                     <option value="KAPAL ANGKUT BUDIDAYA" {{ request('kelompok_alat_tangkap') == 'KAPAL ANGKUT BUDIDAYA' ? 'selected' : '' }}>KAPAL ANGKUT BUDIDAYA</option>
